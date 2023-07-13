@@ -27,22 +27,7 @@ class LoginPanel extends JPanel {
 
         Button continueButton = new Button("Continue");
         continueButton.setBounds(50, 480, 100, 30);
-        // continueButton.addActionListener(new ActionListener() {
-        // @Override
-        // public void actionPerformed(ActionEvent e) {
-        // String name = nameTextField.getText();
-        // String password = passwordTextField.getText();
 
-        // if (checkLogin(name, password)) {
-        // Frame frame = (Frame) getParent();
-        // CardLayout cardLayout = (CardLayout) frame.getLayout();
-        // cardLayout.show(frame, "TodoPanel"); // ページ名を指定して切り替え
-        // } else {
-        // JOptionPane.showMessageDialog(LoginPanel.this, "Invalid login credentials.
-        // Please try again.");
-        // }
-        // }
-        // });
         continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -128,18 +128,7 @@ public class CreateaccountPanel extends JPanel {
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "InitialPanel"); // ページ名を指定して切り替え
         });
-        // add(backButton);
-        //
-
-        // Button backButton = new Button("back");
-        // backButton.setBounds(550, 10, 100, 25);
-        // backButton.addActionListener(e -> {
-        // Frame frame = (Frame) getParent();
-        // CardLayout cardLayout = (CardLayout) frame.getLayout();
-        // cardLayout.first(frame); // 先頭のページに切り替え
-        // });
-        // add(backButton);
-
+        
         add(numberLabel);
         add(numberTextField);
         add(nameLabel);
