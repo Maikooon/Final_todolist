@@ -1,4 +1,5 @@
-// アプリ本体＆エントリーポイント
+// アプリ本体
+// すべてのパネルを配置している
 
 import java.awt.CardLayout;
 import java.awt.Frame;

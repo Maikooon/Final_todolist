@@ -12,21 +12,16 @@ class LoginPanel extends JPanel {
     public static int user_id; // ユーザーIDを保持する変数
 
     public LoginPanel() {
+        // ラベルとボタンの配置
         setLayout(null);
-
         emailTextField = new JTextField();
         emailTextField.setBounds(50, 400, 150, 30);
-        add(new JLabel("Email:", SwingConstants.LEFT));
-        add(emailTextField);
-
         passwordField = new JPasswordField();
         passwordField.setBounds(210, 400, 150, 30);
-        add(new JLabel("Password:", SwingConstants.LEFT));
-        add(passwordField);
-
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(50, 480, 100, 30);
 
+        // 「Login」ボタンが押されたときの処理（フィールドの値を取得してemailとpasswordの組み合わせが正しいかチェック）
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,14 +48,21 @@ class LoginPanel extends JPanel {
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.first(frame); // 先頭のページに切り替え
         });
+
+        // ラベルとボタンの配置
+        add(new JLabel("Email:", SwingConstants.LEFT));
+        add(emailTextField);
+        add(new JLabel("Password:", SwingConstants.LEFT));
+        add(passwordField);
+        add(loginButton);
         add(backButton);
     }
 
+    // emailとpasswordの組み合わせが正しいかチェック
     private boolean checkLogin(String email, String password) {
         try {
             String csvFile = "member.csv";
             BufferedReader br = new BufferedReader(new FileReader(csvFile));
-
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
@@ -69,20 +71,18 @@ class LoginPanel extends JPanel {
                     return true;
                 }
             }
-
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
+    // 入力されたEmailからユーザーIDを取得
     private int getUserIdByEmail(String email) {
         try {
             String csvFile = "member.csv";
             BufferedReader br = new BufferedReader(new FileReader(csvFile));
-
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
@@ -91,12 +91,10 @@ class LoginPanel extends JPanel {
                     return Integer.parseInt(data[0]);
                 }
             }
-
             br.close();
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
-
         return 0;
     }
 }

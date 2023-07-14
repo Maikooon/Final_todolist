@@ -1,3 +1,6 @@
+// top画面
+// signupかloginを選ぶ
+
 import javax.swing.*;
 import java.awt.*;
 

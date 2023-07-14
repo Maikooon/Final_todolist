@@ -1,3 +1,6 @@
+// SignUp画面
+// ユーザがフィールドにユーザ情報を入れたらそれを取得してバリデーションの確認をし、OKだったらCSVファイルにユーザ情報を保存
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,12 +16,13 @@ public class SignUpPanel extends JPanel {
     private JRadioButton publicRadioButton;
     private JRadioButton privateRadioButton;
 
+    // ラベルとボタンの配置
     public SignUpPanel() {
         setLayout(new GridLayout(7, 2, 8, 10));
         setPreferredSize(new Dimension(400, 400));
         setBackground(Color.white);
 
-        JLabel nameLabel = new JLabel("Name:");
+        JLabel nameLabel = new JLabel("Display Name:");
         nameTextField = new JTextField();
 
         JLabel emailLabel = new JLabel("Email:");
@@ -64,6 +68,7 @@ public class SignUpPanel extends JPanel {
         add(backButton);
     }
 
+    // 「Sign Up」ボタンが押されたときの処理（フィールドの値を取得してバリデーションチェックをする）
     class signUpButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String name = nameTextField.getText();
@@ -93,7 +98,7 @@ public class SignUpPanel extends JPanel {
                 return;
             }
 
-            if (!password.equals(passwordConfirm)) {
+            if (!password.equals(passwordConfirm)) { // PasswordとConfirm Passwordが一致するか確認
                 JOptionPane.showMessageDialog(SignUpPanel.this, "Passwords do not match.");
                 return;
             }
@@ -115,14 +120,17 @@ public class SignUpPanel extends JPanel {
         }
     }
 
+    // Nameは3-20文字
     private boolean isValidName(String name) {
         return Pattern.matches("^[A-Za-z]{3,20}$", name);
     }
 
+    // Emailは正式な形で
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$", email);
     }
 
+    // Emailは他のユーザと被らない
     private boolean isUniqueEmail(String email) {
         try {
             BufferedReader br = new BufferedReader(new FileReader("member.csv"));
@@ -141,15 +149,17 @@ public class SignUpPanel extends JPanel {
         return true; // ユニークなEmailの場合はtrueを返す
     }
 
+    // パスワードは8-20文字で英数字を混ぜる
     private boolean isValidPassword(String password) {
         return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", password);
     }
 
+    // アカウントタイプは選択必須
     private boolean isAccountTypeSelected() {
         return publicRadioButton.isSelected() || privateRadioButton.isSelected();
     }
 
-
+    // 現在のユーザの中で最もidの値が大きいユーザのidに1を足したidを新規ユーザに付与する（1から昇順にidを付与する）
     private int assignId() {
         int maxId = 0;
         try {
@@ -176,7 +186,7 @@ public class SignUpPanel extends JPanel {
         return maxId + 1;
     }
 
-
+    // CSVファイルにユーザデータを保存
     private void saveUserData(String userData) {
         try {
             FileWriter writer = new FileWriter("member.csv", true);
@@ -188,6 +198,7 @@ public class SignUpPanel extends JPanel {
         }
     }
 
+    // フィールドの値を空にする
     private void clearFields() {
         nameTextField.setText("");
         emailTextField.setText("");

@@ -17,6 +17,7 @@ class CreateTodoPanel extends JPanel {
     private JComboBox<String> monthComboBox;
     private JComboBox<Integer> dayComboBox;
 
+    // ラベルとボタンの配置
     public CreateTodoPanel() {
         setLayout(new GridLayout(8, 2, 8, 10));
         setPreferredSize(new Dimension(400, 400));
@@ -80,6 +81,7 @@ class CreateTodoPanel extends JPanel {
         add(backButton);
     }
 
+    // 年と月の選択が変更されたときに日の選択肢を更新する
     class DateSelectionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             updateDayOptions();
@@ -113,6 +115,7 @@ class CreateTodoPanel extends JPanel {
         dayComboBox.setModel(model);
     }
 
+    // 「Save」ボタンが押されたときの処理（フィールドの値を取得してバリデーションチェックをする）
     class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 入力された情報を取得
@@ -188,7 +191,7 @@ class CreateTodoPanel extends JPanel {
 
         private boolean validateDeadline(LocalDate deadline) {
             LocalDate now = LocalDate.now();
-            return deadline != null && deadline.isAfter(now);
+            return deadline != null && deadline.isAfter(now); // 入力された締切日が今日より後の日付かどうかチェック
         }
 
         private boolean validatePriority(String priority) {
@@ -196,6 +199,7 @@ class CreateTodoPanel extends JPanel {
         }
     }
 
+    // CSVにtodoを保存
     String toCSV(int user_id, String title, String content, String tag, String priority, LocalDate deadline, String created_at, String updated_at) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String deadlineFormatted = deadline.format(formatter);
