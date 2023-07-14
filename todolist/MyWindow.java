@@ -1,12 +1,8 @@
-// アプリ本体
-// すべてのパネルを配置している
-
-import java.awt.CardLayout;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-class MyWindow extends Frame {
+public class MyWindow extends Frame {
     public static void main(String[] args) {
         MyWindow mw = new MyWindow();
         mw.setVisible(true);
@@ -21,14 +17,21 @@ class MyWindow extends Frame {
         CardLayout cardLayout = new CardLayout(); // addしたものが1ページずつ紙芝居のように表示されるレイアウト
         setLayout(cardLayout);
 
+        TodoListPanel todoListPanel = new TodoListPanel(); // Todoリストパネルのインスタンスを作成
+        DetailTodoPanel detailTodoPanel = new DetailTodoPanel(); // 詳細画面パネルのインスタンスを作成
+
+        // Todoリストパネルに詳細画面パネルを関連付ける
+        todoListPanel.setDetailPanel(detailTodoPanel);
+
         add(new InitialPanel(), "InitialPanel");
         add(new SignUpPanel(), "SignUpPanel");
         add(new LoginPanel(), "LoginPanel");
         add(new TodoPanel(), "TodoPanel");
         add(new CreateTodoPanel(), "CreateTodoPanel");
-        add(new ViewTodoPanel(), "ViewTodoPanel");
         add(new ArchivePanel(), "ArchivePanel");
-        add(new UserdataPanel(), "UserdataPanel");
+        add(new TodoListPanel(), "TodoListPanel");
+        add(todoListPanel, "TodoListPanel");
+        add(detailTodoPanel, "DetailTodoPanel");
 
         addWindowListener(new WinListener());
     }

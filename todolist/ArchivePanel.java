@@ -23,7 +23,7 @@ public class ArchivePanel extends JPanel {
         // ボタン作成
         // deleteButton = new JButton("Delete");
         // archiveButton = new JButton("Archive");
-        backButton = new JButton("back");
+        backButton = new JButton("Back");
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(backButton);

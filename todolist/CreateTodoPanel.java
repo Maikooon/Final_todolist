@@ -31,11 +31,11 @@ class CreateTodoPanel extends JPanel {
         JScrollPane contentScrollPane = new JScrollPane(contentTextArea);
 
         JLabel tagLabel = new JLabel("Tag:");
-        String[] tagOptions = {"School", "Work", "Housework", "Other"};
+        String[] tagOptions = { "Personal", "Work", "Education", "Health", "Finance", "Home", "Social", "Other" };
         tagComboBox = new JComboBox<>(tagOptions);
 
         JLabel priorityLabel = new JLabel("Priority:");
-        String[] priorityOptions = {"High", "Medium-High", "Medium", "Medium-Low", "Low"};
+        String[] priorityOptions = { "High", "Medium-High", "Medium", "Medium-Low", "Low" };
         priorityComboBox = new JComboBox<>(priorityOptions);
 
         JLabel deadlineLabel = new JLabel("Deadline:");
@@ -98,7 +98,8 @@ class CreateTodoPanel extends JPanel {
     }
 
     private String[] getMonthOptions() {
-        return new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        return new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+                "October", "November", "December" };
     }
 
     private void updateDayOptions() {
@@ -134,11 +135,13 @@ class CreateTodoPanel extends JPanel {
 
             // バリデーションチェック
             if (!validateTitle(title)) {
-                JOptionPane.showMessageDialog(null, "Title should be between 3 and 30 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Title should be between 3 and 30 characters.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (!validateContent(content)) {
-                JOptionPane.showMessageDialog(null, "Content should be between 3 and 300 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Content should be between 3 and 300 characters.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (!validateTag(tag)) {
@@ -146,7 +149,8 @@ class CreateTodoPanel extends JPanel {
                 return;
             }
             if (!validateDeadline(deadline)) {
-                JOptionPane.showMessageDialog(null, "Please select a deadline that is today or later.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please select a deadline that is today or later.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
 
                 return;
             }
@@ -155,13 +159,19 @@ class CreateTodoPanel extends JPanel {
                 return;
             }
 
+            // IDの付与
+            int id = assignId();
+
             // CSVファイルに保存
             try {
                 FileWriter writer = new FileWriter("todos.csv", true);
-                writer.write(toCSV(user_id, title, content, tag, priority, deadline, created_at, updated_at));
+                writer.write(toCSV(id, user_id, title, content, tag, priority, deadline, created_at, updated_at));
                 writer.write("\n");
                 writer.close();
                 JOptionPane.showMessageDialog(null, "Saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                Frame frame = (Frame) getParent();
+                CardLayout cardLayout = (CardLayout) frame.getLayout();
+                cardLayout.show(frame, "TodoListPanel");
             } catch (IOException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Failed to save.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -197,12 +207,41 @@ class CreateTodoPanel extends JPanel {
         private boolean validatePriority(String priority) {
             return priority != null && !priority.isEmpty();
         }
+
+        // 現在のtodoの中で最もidの値が大きいtodoのidに1を足したidを新規todoに付与する（1から昇順にidを付与する）
+        private int assignId() {
+            int maxId = 0;
+            try {
+                BufferedReader br = new BufferedReader(new FileReader("todos.csv"));
+                String line;
+                boolean isFirstLine = true; // ヘッダ行をスキップするためのフラグ
+                while ((line = br.readLine()) != null) {
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                        continue; // ヘッダ行をスキップ
+                    }
+                    String[] data = line.split(",");
+                    if (data.length >= 1) {
+                        int id = Integer.parseInt(data[0]);
+                        if (id > maxId) {
+                            maxId = id;
+                        }
+                    }
+                }
+                br.close();
+            } catch (IOException | NumberFormatException e) {
+                e.printStackTrace();
+            }
+            return maxId + 1;
+        }
     }
 
     // CSVにtodoを保存
-    String toCSV(int user_id, String title, String content, String tag, String priority, LocalDate deadline, String created_at, String updated_at) {
+    String toCSV(int id, int user_id, String title, String content, String tag, String priority, LocalDate deadline,
+            String created_at, String updated_at) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String deadlineFormatted = deadline.format(formatter);
-        return String.format("%d,%s,%s,%s,%s,%s,%s,%s", user_id, title, content, tag, deadlineFormatted, priority, created_at, updated_at);
+        return String.format("%d,%d,%s,%s,%s,%s,%s,%s,%s", id, user_id, title, content, tag, deadlineFormatted,
+                priority, created_at, updated_at);
     }
 }
