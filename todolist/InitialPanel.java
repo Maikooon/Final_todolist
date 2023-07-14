@@ -1,4 +1,4 @@
-// Login画面 画面A
+// SignUp or Login
 
 import java.awt.Button;
 import java.awt.CardLayout;
@@ -24,11 +24,11 @@ class InitialPanel extends Panel implements ActionListener {
         }
 
         setLayout(null);
-        Button creatacountButton = new Button("login");
-        creatacountButton.setBounds(250, 100, 200, 50);
+        Button loginButton = new Button("Login");
+        loginButton.setBounds(250, 100, 200, 50);
         // addActionListenerを3パターンで登録したが大体同じ意味
         // ほかのクラスでは行数を節約できるラムダ方式を採用
-        creatacountButton.addActionListener( // 匿名クラスでアクションを指定
+        loginButton.addActionListener( // 匿名クラスでアクションを指定
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -37,29 +37,20 @@ class InitialPanel extends Panel implements ActionListener {
                         cardLayout.show(frame, "LoginPanel"); // ページ名を指定して切り替え
                     }
                 });
-        // startButton.addActionListener(this); //
-        // このクラス(TitlePanel)のactionPerformedでアクションを指定
-        add(creatacountButton);
+        add(loginButton);
 
-
-        Button settingButton = new Button("create account");
-        settingButton.setBounds(250, 200, 200, 50);
-        settingButton.addActionListener( // 匿名クラスでアクションを指定
+        Button signUpButton = new Button("Sign Up");
+        signUpButton.setBounds(250, 200, 200, 50);
+        signUpButton.addActionListener( // 匿名クラスでアクションを指定
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Frame frame = (Frame) getParent();
                         CardLayout cardLayout = (CardLayout) frame.getLayout();
-                        cardLayout.show(frame, "CreateaccountPanel"); // ページ名を指定して切り替え
+                        cardLayout.show(frame, "SignUpPanel"); // ページ名を指定して切り替え
                     }
                 });
-        add(settingButton);
-
-        // // quit
-        // Button exitButton = new Button("quit");
-        // exitButton.setBounds(250, 300, 200, 50);
-        // exitButton.addActionListener(e -> System.exit(0)); // ラムダでアクションを指定
-        // add(exitButton);
+        add(signUpButton);
     }
 
     @Override

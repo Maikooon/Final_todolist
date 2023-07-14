@@ -7,35 +7,34 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class LoginPanel extends JPanel {
-    private JTextField nameTextField;
-    private JTextField passwordTextField;
-    public static String username; // ユーザー名を保持する変数
-
+    private JTextField emailTextField;
+    private JPasswordField passwordField;
+    public static int user_id; // ユーザーIDを保持する変数
 
     public LoginPanel() {
         setLayout(null);
 
-        nameTextField = new JTextField();
-        nameTextField.setBounds(50, 400, 150, 30);
-        add(new JLabel("Username:", SwingConstants.LEFT));
-        add(nameTextField);
+        emailTextField = new JTextField();
+        emailTextField.setBounds(50, 400, 150, 30);
+        add(new JLabel("Email:", SwingConstants.LEFT));
+        add(emailTextField);
 
-        passwordTextField = new JTextField();
-        passwordTextField.setBounds(210, 400, 150, 30);
+        passwordField = new JPasswordField();
+        passwordField.setBounds(210, 400, 150, 30);
         add(new JLabel("Password:", SwingConstants.LEFT));
-        add(passwordTextField);
+        add(passwordField);
 
-        Button continueButton = new Button("Continue");
-        continueButton.setBounds(50, 480, 100, 30);
+        JButton loginButton = new JButton("Login");
+        loginButton.setBounds(50, 480, 100, 30);
 
-        continueButton.addActionListener(new ActionListener() {
+        loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = nameTextField.getText();
-                String password = passwordTextField.getText();
+                String email = emailTextField.getText();
+                String password = new String(passwordField.getPassword());
 
-                if (checkLogin(name, password)) {
-                    username = name; // 入力された名前をフィールドに代入
+                if (checkLogin(email, password)) {
+                    user_id = getUserIdByEmail(email); // 入力されたEmailからユーザーIDを取得してフィールドに代入
 
                     Frame frame = (Frame) getParent();
                     CardLayout cardLayout = (CardLayout) frame.getLayout();
@@ -45,9 +44,9 @@ class LoginPanel extends JPanel {
                 }
             }
         });
-        add(continueButton);
+        add(loginButton);
 
-        Button backButton = new Button("Back");
+        JButton backButton = new JButton("Back");
         backButton.setBounds(550, 10, 100, 25);
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
@@ -57,7 +56,7 @@ class LoginPanel extends JPanel {
         add(backButton);
     }
 
-    private boolean checkLogin(String name, String password) {
+    private boolean checkLogin(String email, String password) {
         try {
             String csvFile = "member.csv";
             BufferedReader br = new BufferedReader(new FileReader(csvFile));
@@ -65,7 +64,7 @@ class LoginPanel extends JPanel {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length >= 4 && data[1].equals(name) && data[3].equals(password)) {
+                if (data.length >= 4 && data[2].equals(email) && data[3].equals(password)) {
                     br.close();
                     return true;
                 }
@@ -77,5 +76,27 @@ class LoginPanel extends JPanel {
         }
 
         return false;
+    }
+
+    private int getUserIdByEmail(String email) {
+        try {
+            String csvFile = "member.csv";
+            BufferedReader br = new BufferedReader(new FileReader(csvFile));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length >= 3 && data[2].equals(email)) {
+                    br.close();
+                    return Integer.parseInt(data[0]);
+                }
+            }
+
+            br.close();
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }
