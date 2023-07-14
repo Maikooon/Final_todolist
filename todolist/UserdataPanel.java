@@ -66,7 +66,7 @@ public class UserdataPanel extends JPanel {
                 String[] data = line.split(",");
                 String username = data[0];
                 String permit = data[1];
-                if (isFirstLine || username.equals(LoginPanel.username) || permit.equals("y")) {
+                if (isFirstLine || username.equals(LoginPanel.email) || permit.equals("y")) {
                     if (headers == null) {
                         headers = Arrays.copyOfRange(data, 2, data.length);
                         model.setColumnIdentifiers(headers); // ヘッダー行を追加
