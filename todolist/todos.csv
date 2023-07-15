@@ -1,13 +1,4 @@
-creator ,permit, title,context, created ,updated,deadline, priority
-a,y,6,6,6,6,6,6
-maiko,y,1,1,1,1,1,1
-maiko,y,2,2,2,2,2,2
-b,n,1,1,1,1,1,1
-b,n,1,1,1,1,1,1
-b,n,1,1,1,1,1,1
-maiko,y,q,q,q,q,q,q
-a,y,1,1,1,1,1,1
-a,y,9,9,9,9,9,9
-a,y,3,3,3,3,3,3
-a,y,3,3,3,3,3,3
-a,y,mmmm,m,gg,g,g,g
+id, user_id, title, content, tag, deadline, priority, created_at, updated_at
+3,13,afgvafdvbz,afbvafdbazdfcx,Finance,2024-01-01,High,2023-07-15 01:47:32,2023-07-15 01:47:32
+14,13,sfrgnx,sngx,Personal,2025-01-01,High,2023-07-15 01:58:55,2023-07-15 01:58:55
+15,13,dfgnhx,dhfnx,Finance,2023-09-01,High,2023-07-15 01:59:04,2023-07-15 01:59:04

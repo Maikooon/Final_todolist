@@ -1,255 +1,262 @@
-
-// todo　を新規作成する画面
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.io.*;
 
-class CreateTodoPanel extends Panel {
+class CreateTodoPanel extends JPanel {
     private JTextField titleTextField;
     private JTextArea contentTextArea;
-    private JTextField createdTextField;
-    private JTextField updatedTextField;
-    private JTextField deadlineTextField;
-    private JTextField priorityTextField;
+    private JComboBox<String> tagComboBox;
+    private JComboBox<String> priorityComboBox;
+    private JComboBox<Integer> yearComboBox;
+    private JComboBox<String> monthComboBox;
+    private JComboBox<Integer> dayComboBox;
 
-    ////////////////////////////////// usenameからPermitを得る関数,Todoを
-    private String getPermitFromMember(String username) {
-        try {
-            String csvFile = "member.csv";
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length >= 2 && data[1].equals(username)) {
-                    br.close();
-                    return data[4]; // permit from member.csv
-                }
-            }
-
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null; // 該当する番号が見つからない場合はnullを返す
-    }
-    ///////////////////////////////////////////////////////
-
+    // ラベルとボタンの配置
     public CreateTodoPanel() {
-        setLayout(new GridLayout(7, 2, 8, 10));
+        setLayout(new GridLayout(8, 2, 8, 10));
         setPreferredSize(new Dimension(400, 400));
-        setBackground(Color.white);
 
-        // creator
-        // JLabel creatorLabel = new JLabel("creator:");
-        // titleTextField = new JTextField();
-
-        // タイトル
         JLabel titleLabel = new JLabel("Title:");
         titleTextField = new JTextField();
 
-        // 内容
         JLabel contentLabel = new JLabel("Content:");
         contentTextArea = new JTextArea();
         JScrollPane contentScrollPane = new JScrollPane(contentTextArea);
 
-        // 作成日時
-        JLabel createdLabel = new JLabel("Created:");
-        createdTextField = new JTextField();
+        JLabel tagLabel = new JLabel("Tag:");
+        String[] tagOptions = { "Personal", "Work", "Education", "Health", "Finance", "Home", "Social", "Other" };
+        tagComboBox = new JComboBox<>(tagOptions);
 
-        // 更新日時
-        JLabel updatedLabel = new JLabel("Updated:");
-        updatedTextField = new JTextField();
-
-        // 締め切り日時
-        JLabel deadlineLabel = new JLabel("Deadline:");
-        deadlineTextField = new JTextField();
-
-        // 優先度
         JLabel priorityLabel = new JLabel("Priority:");
-        priorityTextField = new JTextField();
+        String[] priorityOptions = { "High", "Medium-High", "Medium", "Medium-Low", "Low" };
+        priorityComboBox = new JComboBox<>(priorityOptions);
 
-        // ボタン
+        JLabel deadlineLabel = new JLabel("Deadline:");
+        JLabel yearLabel = new JLabel("Year:");
+        JLabel monthLabel = new JLabel("Month:");
+        JLabel dayLabel = new JLabel("Day:");
+
+        yearComboBox = new JComboBox<>(getYearOptions());
+        monthComboBox = new JComboBox<>(getMonthOptions());
+        dayComboBox = new JComboBox<>();
+
+        // 年と月の選択が変更されたときに日の選択肢を更新する
+        yearComboBox.addActionListener(new DateSelectionListener());
+        monthComboBox.addActionListener(new DateSelectionListener());
+
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(new SaveButtonListener());
 
-        Button backButton = new Button("back");
+        JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.previous(frame); // 先頭のページに切り替え
         });
 
-        // テキストボックスをパネルに追加
-        // add(creatorLabel);
+        // テキストボックスとコンボボックスをパネルに追加
         add(titleLabel);
         add(titleTextField);
         add(contentLabel);
         add(contentScrollPane);
-        add(createdLabel);
-        add(createdTextField);
-        add(updatedLabel);
-        add(updatedTextField);
+        add(tagLabel);
+        add(tagComboBox);
         add(deadlineLabel);
-        add(deadlineTextField);
+        add(yearLabel);
+        add(yearComboBox);
+        add(monthLabel);
+        add(monthComboBox);
+        add(dayLabel);
+        add(dayComboBox);
         add(priorityLabel);
-        add(priorityTextField);
+        add(priorityComboBox);
         add(saveButton);
         add(backButton);
     }
 
+    // 年と月の選択が変更されたときに日の選択肢を更新する
+    class DateSelectionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            updateDayOptions();
+        }
+    }
+
+    private Integer[] getYearOptions() {
+        int currentYear = LocalDate.now().getYear();
+        Integer[] years = new Integer[10];
+        for (int i = 0; i < 10; i++) {
+            years[i] = currentYear + i;
+        }
+        return years;
+    }
+
+    private String[] getMonthOptions() {
+        return new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+                "October", "November", "December" };
+    }
+
+    private void updateDayOptions() {
+        int selectedYear = (int) yearComboBox.getSelectedItem();
+        int selectedMonth = Arrays.asList(getMonthOptions()).indexOf(monthComboBox.getSelectedItem()) + 1;
+        int daysInMonth = LocalDate.of(selectedYear, selectedMonth, 1).lengthOfMonth();
+
+        Integer[] days = new Integer[daysInMonth];
+        for (int i = 0; i < daysInMonth; i++) {
+            days[i] = i + 1;
+        }
+
+        DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<>(days);
+        dayComboBox.setModel(model);
+    }
+
+    // 「Save」ボタンが押されたときの処理（フィールドの値を取得してバリデーションチェックをする）
     class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 入力された情報を取得
+            int user_id = LoginPanel.user_id;
             String title = titleTextField.getText();
             String content = contentTextArea.getText();
-            String created = createdTextField.getText();
-            String updated = updatedTextField.getText();
-            String deadline = deadlineTextField.getText();
-            String priority = priorityTextField.getText();
+            String tag = (String) tagComboBox.getSelectedItem();
+            String priority = (String) priorityComboBox.getSelectedItem();
+            int selectedYear = (int) yearComboBox.getSelectedItem();
+            int selectedMonth = Arrays.asList(getMonthOptions()).indexOf(monthComboBox.getSelectedItem()) + 1;
+            int selectedDay = (int) dayComboBox.getSelectedItem();
+            LocalDate deadline = LocalDate.of(selectedYear, selectedMonth, selectedDay);
+            LocalDateTime now = LocalDateTime.now();
+            String created_at = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String updated_at = created_at;
 
-            // ここまは実行されてる、おｋ
+            // バリデーションチェック
+            if (!validateTitle(title)) {
+                JOptionPane.showMessageDialog(null, "Title should be between 3 and 30 characters.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!validateContent(content)) {
+                JOptionPane.showMessageDialog(null, "Content should be between 3 and 300 characters.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!validateTag(tag)) {
+                JOptionPane.showMessageDialog(null, "Please select a tag.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!validateDeadline(deadline)) {
+                JOptionPane.showMessageDialog(null, "Please select a deadline that is today or later.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
 
-            System.out.println(getPermitFromMember(LoginPanel.username));
+                return;
+            }
+            if (!validatePriority(priority)) {
+                JOptionPane.showMessageDialog(null, "Please select a priority.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // IDの付与
+            int id = assignId();
 
             // CSVファイルに保存
             try {
                 FileWriter writer = new FileWriter("todos.csv", true);
-                writer.write(toCSV(LoginPanel.username, getPermitFromMember(LoginPanel.username), title, content,
-                        created, updated,
-                        deadline, priority));
+                writer.write(toCSV(id, user_id, title, content, tag, priority, deadline, created_at, updated_at));
                 writer.write("\n");
                 writer.close();
-                //System.out.println("mmmmmmmm");
-
-                // 保存完了のメッセージを表示
-                System.out.println("保存しました。");
+                JOptionPane.showMessageDialog(null, "Saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                Frame frame = (Frame) getParent();
+                CardLayout cardLayout = (CardLayout) frame.getLayout();
+                cardLayout.show(frame, "TodoListPanel");
             } catch (IOException ex) {
                 ex.printStackTrace();
-                // 保存エラーのメッセージを表示
-                System.out.println("保存に失敗しました。");
+                JOptionPane.showMessageDialog(null, "Failed to save.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
             // 入力フィールドをクリア
             titleTextField.setText("");
             contentTextArea.setText("");
-            createdTextField.setText("");
-            updatedTextField.setText("");
-            deadlineTextField.setText("");
-            priorityTextField.setText("");
+            tagComboBox.setSelectedIndex(0);
+            priorityComboBox.setSelectedIndex(0);
+            yearComboBox.setSelectedIndex(0);
+            monthComboBox.setSelectedIndex(0);
+            dayComboBox.setSelectedIndex(0);
+        }
+
+        private boolean validateTitle(String title) {
+            return title.length() >= 3 && title.length() <= 30;
+        }
+
+        private boolean validateContent(String content) {
+            return content.length() >= 3 && content.length() <= 300;
+        }
+
+        private boolean validateTag(String tag) {
+            return tag != null && !tag.isEmpty();
+        }
+
+        private boolean validateDeadline(LocalDate deadline) {
+            LocalDate now = LocalDate.now();
+            return deadline != null && deadline.isAfter(now); // 入力された締切日が今日より後の日付かどうかチェック
+        }
+
+        private boolean validatePriority(String priority) {
+            return priority != null && !priority.isEmpty();
+        }
+
+        // 現在のtodoの中で最もidの値が大きいtodoのidに1を足したidを新規todoに付与する（1から昇順にidを付与する）
+        private int assignId() {
+            int maxId = 0;
+            try {
+                BufferedReader br = new BufferedReader(new FileReader("todos.csv"));
+                String line;
+                boolean isFirstLine = true; // ヘッダ行をスキップするためのフラグ
+                while ((line = br.readLine()) != null) {
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                        continue; // ヘッダ行をスキップ
+                    }
+                    String[] data = line.split(",");
+                    if (data.length >= 1) {
+                        int id = Integer.parseInt(data[0]);
+                        if (id > maxId) {
+                            maxId = id;
+                        }
+                    }
+                }
+                br.close();
+                br = new BufferedReader(new FileReader("archive.csv"));
+                isFirstLine = true; // ヘッダ行をスキップするためのフラグ
+                while ((line = br.readLine()) != null) {
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                        continue; // ヘッダ行をスキップ
+                    }
+                    String[] data = line.split(",");
+                    if (data.length >= 1) {
+                        int id = Integer.parseInt(data[0]);
+                        if (id > maxId) {
+                            maxId = id;
+                        }
+                    }
+                }
+                br.close();
+            } catch (IOException | NumberFormatException e) {
+                e.printStackTrace();
+            }
+            return maxId + 1;
         }
     }
 
-    // String toCSV(String username, String permit, String title, String content,
-    // String created, String updated,
-    // String deadline,
-    // String priority) {
-    // return String.format("%s,%s,%s,%s,%s,%s,%s,%s", username, title, content,
-    // created, updated, deadline, priority);
-    // }
-
-    String toCSV(String username, String permit, String title, String content, String created, String updated,
-            String deadline, String priority) {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s", username, permit, title, content, created, updated, deadline,
-                priority);
+    // CSVにtodoを保存
+    String toCSV(int id, int user_id, String title, String content, String tag, String priority, LocalDate deadline,
+            String created_at, String updated_at) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String deadlineFormatted = deadline.format(formatter);
+        return String.format("%d,%d,%s,%s,%s,%s,%s,%s,%s", id, user_id, title, content, tag, deadlineFormatted,
+                priority, created_at, updated_at);
     }
 }
-
-    // private class SaveButtonListener implements ActionListener {
-    // public void actionPerformed(ActionEvent e) {
-    // String title = titleTextField.getText();
-    // String content = contentTextArea.getText();
-    // String created = createdTextField.getText();
-    // String updated = updatedTextField.getText();
-    // String deadline = deadlineTextField.getText();
-    // String priority = priorityTextField.getText();
-
-    // // Create an instance of DisplayTodoPanel and pass the input data
-    // DisplayTodoPanel displayPanel = new DisplayTodoPanel(title, content, created,
-    // updated, deadline, priority);
-
-    // // Display the panel in a new frame or replace the current panel in your
-    // // existing frame
-    // JFrame frame = new JFrame("Display Todo");
-    // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    // frame.getContentPane().add(displayPanel);
-    // frame.pack();
-    // frame.setVisible(true);
-
-    // // 保存完了メッセージを表示するダイアログを表示
-    // JOptionPane.showMessageDialog(CreateTodoPanel.this, "Todo saved
-    // successfully!");
-
-    // // 入力フィールドをクリアする
-    // clearFields();
-    // }
-    // }
-
-    // class SaveButtonListener implements ActionListener {
-    // public void actionPerformed(ActionEvent e) {
-    // // 入力された情報を取得
-    // String title = titleTextField.getText();
-    // String content = contentTextArea.getText();
-    // String created = createdTextField.getText();
-    // String updated = updatedTextField.getText();
-    // String deadline = deadlineTextField.getText();
-    // String priority = priorityTextField.getText();
-
-    // // CSVファイルに保存
-    // try {
-    // FileWriter writer = new FileWriter("todos.csv", true);
-    // writer.write(toCSV(title, content, created, updated, deadline, priority));
-    // writer.write("\n");
-    // writer.close();
-
-    // // 保存完了のメッセージを表示
-    // System.out.println("保存しました。");
-    // } catch (IOException ex) {
-    // ex.printStackTrace();
-    // // 保存エラーのメッセージを表示
-    // System.out.println("保存に失敗しました。");
-    // }
-
-    // // 入力フィールドをクリア
-    // titleTextField.setText("");
-    // contentTextArea.setText("");
-    // createdTextField.setText("");
-    // updatedTextField.setText("");
-    // deadlineTextField.setText("");
-    // priorityTextField.setText("");
-    // // }
-    // }
-
-    // String toCSV(String title, String content, String created, String updated,
-    // String deadline, String priority) {
-    // return String.format("%s,%s,%s,%s,%s,%s", title, content, created, updated,
-    // deadline, priority);
-    // }
-
-    // private void saveToDatabase(String title, String content, String created,
-    // String updated, String deadline,
-    // String priority) {
-    // // データベースに接続して保存処理を行うコードを追加する
-    // // ここでは、サンプルとしてデータの出力のみ行います
-    // System.out.println("Title: " + title);
-    // System.out.println("Content: " + content);
-    // System.out.println("Created: " + created);
-    // System.out.println("Updated: " + updated);
-    // System.out.println("Deadline: " + deadline);
-    // System.out.println("Priority: " + priority);
-    // }
-
-    // private void clearFields() {
-    // titleTextField.setText("");
-    // contentTextArea.setText("");
-    // createdTextField.setText("");
-    // updatedTextField.setText("");
-    // deadlineTextField.setText("");
-    // priorityTextField.setText("");
-    // }

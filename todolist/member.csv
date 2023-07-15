@@ -1,5 +1,6 @@
-number,name,email,password,permit
-1,maiko,maiko@gmail.com,maiko0626,y
-2,6,6,6,y
-3,a,a,a,y
-4,b,b,b,n
+id,name,email,password,accountType
+13,kanon,kanon@test.com,kanon1234,Public
+14,kanon,kanon1234@test.com,kanon1234,Public
+15,kanon,kanon12@test.com,kanon1234,Public
+16,kanon,kanon@a.com,kanon1234,Public
+17,kanonamemiya,kanon123@test.com,kanon123,Private

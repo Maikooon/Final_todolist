@@ -1,13 +1,8 @@
-// アプリ本体＆エントリーポイント
-
-import java.awt.CardLayout;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-//import todolist.ViewTodoPanel;
-
-class MyWindow extends Frame {
+public class MyWindow extends Frame {
     public static void main(String[] args) {
         MyWindow mw = new MyWindow();
         mw.setVisible(true);
@@ -22,17 +17,21 @@ class MyWindow extends Frame {
         CardLayout cardLayout = new CardLayout(); // addしたものが1ページずつ紙芝居のように表示されるレイアウト
         setLayout(cardLayout);
 
-        add(new InitialPanel(), "InitialPanel"); // 初めのページ
-        add(new CreateaccountPanel(), "CreateaccountPanel"); // 初めて利用する人がアカウントを作るページ
-        add(new LoginPanel(), "LoginPanel"); // 初めて利用する人がアカウントを作るページ
-        add(new TodoPanel(), "TodoPanel"); // ログインするページ
-        add(new CreateTodoPanel(), "CreateTodoPanel");
-        add(new ViewTodoPanel(), "ViewTodoPanel");
-        add(new ArchivePanel(), "ArchivePanel");
-        add(new UserdataPanel(), "UserdataPanel");
-        // add(new ViewTodoPanel(), "UserdataPanel");
+        TodoListPanel todoListPanel = new TodoListPanel(); // Todoリストパネルのインスタンスを作成
+        DetailTodoPanel detailTodoPanel = new DetailTodoPanel(); // 詳細画面パネルのインスタンスを作成
 
-        // add(new DisplayTodoPanel(), "CreateTodoPanel");
+        // Todoリストパネルに詳細画面パネルを関連付ける
+        todoListPanel.setDetailPanel(detailTodoPanel);
+
+        add(new InitialPanel(), "InitialPanel");
+        add(new SignUpPanel(), "SignUpPanel");
+        add(new LoginPanel(), "LoginPanel");
+        add(new TodoPanel(), "TodoPanel");
+        add(new CreateTodoPanel(), "CreateTodoPanel");
+        add(new ArchivePanel(), "ArchivePanel");
+        add(todoListPanel, "TodoListPanel");
+        add(detailTodoPanel, "DetailTodoPanel");
+        add(new EditTodoPanel(""), "EditTodoPanel"); // 引数に空の文字列を渡す
 
         addWindowListener(new WinListener());
     }

@@ -20,7 +20,7 @@ public class TodoPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         Frame frame = (Frame) getParent();
                         CardLayout cardLayout = (CardLayout) frame.getLayout();
-                        cardLayout.show(frame, "UserdataPanel"); // ページ名を指定して切り替え
+                        cardLayout.show(frame, "TodoListPanel"); // ページ名を指定して切り替え
                     }
                 });
         add(showtodoButton);
