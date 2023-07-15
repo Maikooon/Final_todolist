@@ -29,9 +29,9 @@ public class MyWindow extends Frame {
         add(new TodoPanel(), "TodoPanel");
         add(new CreateTodoPanel(), "CreateTodoPanel");
         add(new ArchivePanel(), "ArchivePanel");
-        add(new TodoListPanel(), "TodoListPanel");
         add(todoListPanel, "TodoListPanel");
         add(detailTodoPanel, "DetailTodoPanel");
+        add(new EditTodoPanel(""), "EditTodoPanel"); // 引数に空の文字列を渡す
 
         addWindowListener(new WinListener());
     }

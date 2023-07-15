@@ -1,13 +1,12 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DetailTodoPanel extends JPanel {
+    private JLabel idLabel;
     private JLabel nameLabel;
     private JLabel titleLabel;
     private JLabel contentLabel;
@@ -23,8 +22,10 @@ public class DetailTodoPanel extends JPanel {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        JPanel contentPanel = new JPanel(new GridLayout(8, 2, 5, 10));
+        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); // 9行目に追加
 
+        JLabel idTitleLabel = new JLabel("ID:");
+        idLabel = new JLabel();
         JLabel nameTitleLabel = new JLabel("Name:");
         nameLabel = new JLabel();
         JLabel titleTitleLabel = new JLabel("Title:");
@@ -42,6 +43,8 @@ public class DetailTodoPanel extends JPanel {
         JLabel updatedAtTitleLabel = new JLabel("Updated At:");
         updatedAtLabel = new JLabel();
 
+        contentPanel.add(idTitleLabel);
+        contentPanel.add(idLabel);
         contentPanel.add(nameTitleLabel);
         contentPanel.add(nameLabel);
         contentPanel.add(titleTitleLabel);
@@ -93,6 +96,35 @@ public class DetailTodoPanel extends JPanel {
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "CreateTodoPanel");
         });
+
+        editButton.addActionListener(e -> {
+            String todoId = idLabel.getText();
+            EditTodoPanel editTodoPanel = new EditTodoPanel(todoId);
+            Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
+            CardLayout cardLayout = (CardLayout) frame.getLayout();
+            cardLayout.show(frame, "EditTodoPanel");
+            editTodoPanel.loadTodoDetails(todoId);
+        });
+
+        archiveButton.addActionListener(e -> {
+            int option = showConfirmationDialog("Archive Confirmation", "Are you sure you want to archive this todo?");
+            if (option == JOptionPane.YES_OPTION) {
+                archiveTodo();
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
+                CardLayout cardLayout = (CardLayout) frame.getLayout();
+                cardLayout.show(frame, "TodoListPanel");
+            }
+        });
+        
+        deleteButton.addActionListener(e -> {
+            int option = showConfirmationDialog("Delete Confirmation", "Are you sure you want to delete this todo?");
+            if (option == JOptionPane.YES_OPTION) {
+                deleteTodo();
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
+                CardLayout cardLayout = (CardLayout) frame.getLayout();
+                cardLayout.show(frame, "TodoListPanel");
+            }
+        });
     }
 
     public void loadTodoDetails(String todoId) {
@@ -102,6 +134,7 @@ public class DetailTodoPanel extends JPanel {
             String memberId = todoDetails[1];
             String name = members.get(memberId);
             if (name != null) {
+                idLabel.setText(todoDetails[0]); // IDを設定
                 nameLabel.setText(name);
                 titleLabel.setText(todoDetails[2]);
                 contentLabel.setText(todoDetails[3]);
@@ -111,25 +144,23 @@ public class DetailTodoPanel extends JPanel {
                 createdAtLabel.setText(todoDetails[7]);
                 updatedAtLabel.setText(todoDetails[8]);
             } else {
-                nameLabel.setText("N/A");
-                titleLabel.setText("N/A");
-                contentLabel.setText("N/A");
-                tagLabel.setText("N/A");
-                deadlineLabel.setText("N/A");
-                priorityLabel.setText("N/A");
-                createdAtLabel.setText("N/A");
-                updatedAtLabel.setText("N/A");
+                setDefaultLabels();
             }
         } else {
-            nameLabel.setText("N/A");
-            titleLabel.setText("N/A");
-            contentLabel.setText("N/A");
-            tagLabel.setText("N/A");
-            deadlineLabel.setText("N/A");
-            priorityLabel.setText("N/A");
-            createdAtLabel.setText("N/A");
-            updatedAtLabel.setText("N/A");
+            setDefaultLabels();
         }
+    }
+
+    private void setDefaultLabels() {
+        idLabel.setText("N/A");
+        nameLabel.setText("N/A");
+        titleLabel.setText("N/A");
+        contentLabel.setText("N/A");
+        tagLabel.setText("N/A");
+        deadlineLabel.setText("N/A");
+        priorityLabel.setText("N/A");
+        createdAtLabel.setText("N/A");
+        updatedAtLabel.setText("N/A");
     }
 
     private Map<String, String> readMembersFromCSV(String fileName) {
@@ -167,4 +198,103 @@ public class DetailTodoPanel extends JPanel {
 
         return null;
     }
+
+    private void archiveTodo() {
+        String todoId = idLabel.getText(); // IDラベルからtodoIdを取得する（仮定）
+
+        try {
+            // todos.csvを読み込む
+            File todosFile = new File("todos.csv");
+            File archiveFile = new File("archive.csv");
+
+            BufferedReader br = new BufferedReader(new FileReader(todosFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archiveFile, true));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data[0].equals(todoId)) {
+                    // アーカイブするタスクをarchive.csvに追加
+                    bw.write(line);
+                    bw.newLine();
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            // todos.csvからアーカイブしたタスクを削除する
+            File tempFile = new File("temp.csv");
+
+            br = new BufferedReader(new FileReader(todosFile));
+            bw = new BufferedWriter(new FileWriter(tempFile));
+
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (!data[0].equals(todoId)) {
+                    // アーカイブしていないタスクをtemp.csvに書き込む
+                    bw.write(line);
+                    bw.newLine();
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            // todos.csvを更新した内容で置き換える
+            todosFile.delete();
+            tempFile.renameTo(todosFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteTodo() {
+        String todoId = idLabel.getText(); // IDラベルからtodoIdを取得する
+
+        try {
+            // Read todos.csv
+            File todosFile = new File("todos.csv");
+            File tempFile = new File("temp.csv");
+
+            BufferedReader br = new BufferedReader(new FileReader(todosFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
+
+            String line;
+            boolean isFirstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    bw.write(line);
+                    bw.newLine();
+                    isFirstLine = false;
+                } else {
+                    String[] data = line.split(",");
+                    if (!data[0].equals(todoId)) {
+                        bw.write(line);
+                        bw.newLine();
+                    }
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            // Replace todos.csv with the updated content
+            todosFile.delete();
+
+            // Rename temp.csv to todos.csv
+            if (!tempFile.renameTo(new File("todos.csv"))) {
+                throw new IOException("Failed to rename temp.csv to todos.csv");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int showConfirmationDialog(String title, String message) {
+        return JOptionPane.showOptionDialog(this, message, title,
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                new Object[] { "Yes", "Cancel" }, "Yes");
+    }
+
 }

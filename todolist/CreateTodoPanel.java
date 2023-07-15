@@ -21,7 +21,6 @@ class CreateTodoPanel extends JPanel {
     public CreateTodoPanel() {
         setLayout(new GridLayout(8, 2, 8, 10));
         setPreferredSize(new Dimension(400, 400));
-        setBackground(Color.white);
 
         JLabel titleLabel = new JLabel("Title:");
         titleTextField = new JTextField();
@@ -215,6 +214,22 @@ class CreateTodoPanel extends JPanel {
                 BufferedReader br = new BufferedReader(new FileReader("todos.csv"));
                 String line;
                 boolean isFirstLine = true; // ヘッダ行をスキップするためのフラグ
+                while ((line = br.readLine()) != null) {
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                        continue; // ヘッダ行をスキップ
+                    }
+                    String[] data = line.split(",");
+                    if (data.length >= 1) {
+                        int id = Integer.parseInt(data[0]);
+                        if (id > maxId) {
+                            maxId = id;
+                        }
+                    }
+                }
+                br.close();
+                br = new BufferedReader(new FileReader("archive.csv"));
+                isFirstLine = true; // ヘッダ行をスキップするためのフラグ
                 while ((line = br.readLine()) != null) {
                     if (isFirstLine) {
                         isFirstLine = false;

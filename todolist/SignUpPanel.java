@@ -20,7 +20,6 @@ public class SignUpPanel extends JPanel {
     public SignUpPanel() {
         setLayout(new GridLayout(7, 2, 8, 10));
         setPreferredSize(new Dimension(400, 400));
-        setBackground(Color.white);
 
         JLabel nameLabel = new JLabel("Display Name:");
         nameTextField = new JTextField();

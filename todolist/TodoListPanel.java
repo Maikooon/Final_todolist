@@ -29,9 +29,9 @@ public class TodoListPanel extends JPanel {
             String memberId = todo[1];
             String memberName = findMemberName(memberId);
             String title = todo[2];
-            String tag = todo[3];
-            String deadline = todo[4];
-            String priority = todo[5];
+            String tag = todo[4];
+            String deadline = todo[5];
+            String priority = todo[6];
 
             JButton todoButton = new JButton(memberName + ": " + title + " (" + tag + ") " + deadline + " - " + priority);
             todoButton.setPreferredSize(new Dimension(350, 50));
