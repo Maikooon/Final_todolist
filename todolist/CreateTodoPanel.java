@@ -178,6 +178,14 @@ class CreateTodoPanel extends JPanel {
                 writer.write(toCSV(id, user_id, title, content, tag, priority, deadline, created_at, updated_at));
                 writer.write("\n");
                 writer.close();
+                // 入力フィールドをクリア
+                titleTextField.setText("");
+                contentTextArea.setText("");
+                tagComboBox.setSelectedIndex(0);
+                priorityComboBox.setSelectedIndex(0);
+                yearComboBox.setSelectedIndex(0);
+                monthComboBox.setSelectedIndex(0);
+                dayComboBox.setSelectedIndex(0);
                 JOptionPane.showMessageDialog(null, "Saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 Frame frame = (Frame) SwingUtilities.getWindowAncestor(CreateTodoPanel.this);
                 MyWindow myWindow = (MyWindow) frame;
@@ -188,15 +196,6 @@ class CreateTodoPanel extends JPanel {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Failed to save.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-            // 入力フィールドをクリア
-            titleTextField.setText("");
-            contentTextArea.setText("");
-            tagComboBox.setSelectedIndex(0);
-            priorityComboBox.setSelectedIndex(0);
-            yearComboBox.setSelectedIndex(0);
-            monthComboBox.setSelectedIndex(0);
-            dayComboBox.setSelectedIndex(0);
         }
 
         // titleは3~30文字

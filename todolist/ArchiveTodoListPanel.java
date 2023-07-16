@@ -9,18 +9,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-// All Todo List
-// 自分のtodoとPiblicの人のtodoが見れる
+// Archive Todo List
+// 自分のアーカイブしたtodoが見れる
 
-public class TodoListPanel extends JPanel {
+public class ArchiveTodoListPanel extends JPanel {
     private List<String[]> todos;
     private List<String[]> members;
-    private DetailTodoPanel detailPanel; // 詳細情報を表示するパネル
+    private ArchiveDetailTodoPanel detailPanel; // 詳細情報を表示するパネル
 
-    public TodoListPanel() {
-        todos = readCSV("todos.csv");
+    public ArchiveTodoListPanel() {
+        todos = readCSV("archive.csv");
         members = readCSV("member.csv");
-
+        
         // 全体のレイアウト
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 20, 40));
@@ -38,12 +38,12 @@ public class TodoListPanel extends JPanel {
             String tag = todo[4];
             String deadline = todo[5];
             String priority = todo[6];
-            // 自分かPublicの人のtodoではなかったらcontinue
-            if (!isOpen(memberId)) {
+            // 自分のtodoではなかったらcontinue
+            if (!isMyTodo(memberId)) {
                 continue;
             }
             JButton todoButton = new JButton(memberName + ": " + title + " (" + tag + ") " + deadline + " - " + priority);
-            todoButton.setPreferredSize(new Dimension(800, 100));
+            todoButton.setPreferredSize(new Dimension(350, 50));
             todoButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     onTodoButtonClick(todoId);
@@ -56,41 +56,28 @@ public class TodoListPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(buttonPanel);
         scrollPane.setBorder(null);
         add(scrollPane, BorderLayout.CENTER);
-        
+
         // ヘッダーボタン
         JButton backButton = new JButton("Back");
-        JButton archiveButton = new JButton("Archive List");
         JButton addButton = new JButton("+");
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        rightButtonPanel.add(archiveButton);
-        rightButtonPanel.add(addButton);
         headerPanel.add(backButton, BorderLayout.WEST);
-        headerPanel.add(rightButtonPanel, BorderLayout.EAST);
+        headerPanel.add(addButton, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
         // ボタンアクション
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(ArchiveTodoListPanel.this);
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
-                cardLayout.show(frame, "MainPanel");
-            }
-        });
-        archiveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
-                CardLayout cardLayout = (CardLayout) frame.getLayout();
-                cardLayout.show(frame, "ArchiveTodoListPanel");
+                cardLayout.show(frame, "TodoListPanel");
             }
         });
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(ArchiveTodoListPanel.this);
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
                 cardLayout.show(frame, "CreateTodoPanel");
             }
@@ -100,13 +87,13 @@ public class TodoListPanel extends JPanel {
     // ボタンが押されたらDetailTodoPanelの中身を作って遷移する
     private void onTodoButtonClick(String todoId) {
         detailPanel.loadTodoDetails(todoId);
-        Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
+        Frame frame = (Frame) SwingUtilities.getWindowAncestor(ArchiveTodoListPanel.this);
         CardLayout cardLayout = (CardLayout) frame.getLayout();
-        cardLayout.show(frame, "DetailTodoPanel");
+        cardLayout.show(frame, "ArchiveDetailTodoPanel");
     }
 
     // MyWindowで呼び出す
-    public void setDetailPanel(DetailTodoPanel detailPanel) {
+    public void setDetailPanel(ArchiveDetailTodoPanel detailPanel) {
         this.detailPanel = detailPanel;
     }
 
@@ -141,20 +128,11 @@ public class TodoListPanel extends JPanel {
         return "Unknown";
     }
 
-    // 自分かPublicの人のタスクかどうか
-    private boolean isOpen(String memberId) {
+    // 自分の人のタスクかどうか
+    private boolean isMyTodo(String memberId) {
         String user_id = String.valueOf(LoginPanel.user_id);
-        for (String[] member : members) {
-            if (user_id.equals(memberId)) {
-                return true;
-            }
-            if (member[0].equals(memberId)) {
-                if (member[4].equals("Public")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+        if (user_id.equals(memberId)) {
+            return true;
         }
         return false;
     }

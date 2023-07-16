@@ -123,8 +123,8 @@ public class SignUpPanel extends JPanel {
             // ユーザ情報の保存
             String userData = String.format("%d,%s,%s,%s,%s", id, name, email, password, accountType);
             saveUserData(userData);
-            JOptionPane.showMessageDialog(SignUpPanel.this, "Member saved successfully!");
             clearFields();
+            JOptionPane.showMessageDialog(SignUpPanel.this, "Member saved successfully!");
             Frame frame = (Frame) getParent();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "LoginPanel");
@@ -133,9 +133,9 @@ public class SignUpPanel extends JPanel {
 
     // Nameは3-20文字
     private boolean isValidName(String name) {
-        return Pattern.matches("^[A-Za-z]{3,20}$", name);
+        return name.length() >= 3 && name.length() <= 20;
     }
-
+    
     // Emailは正式な形で
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$", email);
