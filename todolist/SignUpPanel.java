@@ -135,7 +135,7 @@ public class SignUpPanel extends JPanel {
     private boolean isValidName(String name) {
         return name.length() >= 3 && name.length() <= 20;
     }
-    
+
     // Emailは正式な形で
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$", email);

@@ -63,14 +63,14 @@ class LoginPanel extends JPanel {
                     // 入力フィールドをクリア
                     emailTextField.setText("");
                     passwordField.setText("");
-                    JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!");
+                    JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     Frame frame = (Frame) SwingUtilities.getWindowAncestor(LoginPanel.this);
                     MyWindow myWindow = (MyWindow) frame;
                     myWindow.addPanelsAfterLogin();
                     CardLayout cardLayout = (CardLayout) frame.getLayout();
                     cardLayout.show(frame, "MainPanel");
                 } else {
-                    JOptionPane.showMessageDialog(LoginPanel.this, "Invalid login credentials. Please try again.");
+                    JOptionPane.showMessageDialog(LoginPanel.this, "Invalid login credentials. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
