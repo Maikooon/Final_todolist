@@ -2,11 +2,12 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-// 各画面を制御する
-// addしたものが1ページずつ紙芝居のように表示されるレイアウト
-// 起動時に全てのPanelが生成される（→TodoListが最新でない問題）
-
 public class MyWindow extends Frame {
+    private TodoListPanel todoListPanel;
+    private DetailTodoPanel detailTodoPanel;
+    private EditTodoPanel editTodoPanel;
+    private MyPagePanel myPagePanel;
+
     public static void main(String[] args) {
         MyWindow mw = new MyWindow();
         mw.setVisible(true);
@@ -20,24 +21,34 @@ public class MyWindow extends Frame {
         CardLayout cardLayout = new CardLayout();
         setLayout(cardLayout);
 
-        // 値の受け渡しをする画面同士の制御
-        TodoListPanel todoListPanel = new TodoListPanel();
-        DetailTodoPanel detailTodoPanel = new DetailTodoPanel();
-        EditTodoPanel editTodoPanel = new EditTodoPanel();
-        todoListPanel.setDetailPanel(detailTodoPanel);
-        detailTodoPanel.setEditlPanel(editTodoPanel);
-
         add(new InitialPanel(), "InitialPanel");
         add(new SignUpPanel(), "SignUpPanel");
         add(new LoginPanel(), "LoginPanel");
         add(new MainPanel(), "MainPanel");
         add(new CreateTodoPanel(), "CreateTodoPanel");
         add(new ArchivePanel(), "ArchivePanel");
+
+        addWindowListener(new WinListener());
+    }
+
+    // ログイン成功時にパネルを追加する
+    public void addPanelsAfterLogin() {
+        // 値の受け渡しをする画面同士の制御
+        todoListPanel = new TodoListPanel();
+        detailTodoPanel = new DetailTodoPanel();
+        editTodoPanel = new EditTodoPanel();
+        myPagePanel = new MyPagePanel();
+        todoListPanel.setDetailPanel(detailTodoPanel);
+        detailTodoPanel.setEditlPanel(editTodoPanel);
+
         add(todoListPanel, "TodoListPanel");
         add(detailTodoPanel, "DetailTodoPanel");
         add(editTodoPanel, "EditTodoPanel");
+        add(myPagePanel, "MyPagePanel");
 
-        addWindowListener(new WinListener());
+        // パネルの初期表示はログイン画面に設定
+        CardLayout cardLayout = (CardLayout) getLayout();
+        cardLayout.show(this, "LoginPanel");
     }
 
     // 画面を閉じたらプログラム終了

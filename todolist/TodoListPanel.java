@@ -33,7 +33,7 @@ public class TodoListPanel extends JPanel {
             String deadline = todo[5];
             String priority = todo[6];
 
-            if (!checkOpen(memberId)) {
+            if (!isOpen(memberId)) {
                 continue;
             }
             JButton todoButton = new JButton(memberName + ": " + title + " (" + tag + ") " + deadline + " - " + priority);
@@ -122,7 +122,8 @@ public class TodoListPanel extends JPanel {
         return "Unknown";
     }
 
-    private boolean checkOpen(String memberId) {
+    private boolean isOpen(String memberId) {
+        System.out.println(LoginPanel.user_id);
         String user_id = String.valueOf(LoginPanel.user_id);
         for (String[] member : members) {
             if (user_id.equals(memberId)) {

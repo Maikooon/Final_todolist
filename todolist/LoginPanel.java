@@ -61,7 +61,9 @@ class LoginPanel extends JPanel {
                 if (checkLogin(email, password)) {
                     user_id = getUserIdByEmail(email); // 入力されたEmailからユーザーIDを取得してクラス変数に代入
                     JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!");
-                    Frame frame = (Frame) getParent();
+                    Frame frame = (Frame) SwingUtilities.getWindowAncestor(LoginPanel.this);
+                    MyWindow myWindow = (MyWindow) frame;
+                    myWindow.addPanelsAfterLogin();
                     CardLayout cardLayout = (CardLayout) frame.getLayout();
                     cardLayout.show(frame, "MainPanel");
                 } else {
