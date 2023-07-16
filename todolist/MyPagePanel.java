@@ -12,8 +12,6 @@ public class MyPagePanel extends JPanel {
     private JLabel nameLabel;
     private JLabel emailLabel;
     private JLabel accountTypeLabel;
-    // ↓型の名前後で変える
-    //private EditTodoPanel editPanel; // 編集画面のデータのセットに用いる
 
     public MyPagePanel() {
         // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
@@ -70,6 +68,13 @@ public class MyPagePanel extends JPanel {
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "MainPanel");
         });
+        editButton.addActionListener(e -> {
+            Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyPagePanel.this);
+            MyWindow myWindow = (MyWindow) frame;
+            myWindow.addPanelsAfterLogin();
+            CardLayout cardLayout = (CardLayout) frame.getLayout();
+            cardLayout.show(frame, "EditMyPagePanel");
+        });
         logoutButton.addActionListener(e -> {
             int option = showConfirmationDialog("Logout Confirmation", "Are you sure you want to log out??");
             if (option == JOptionPane.YES_OPTION) {
@@ -113,9 +118,4 @@ public class MyPagePanel extends JPanel {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 new Object[] { "Yes", "Cancel" }, "Yes");
     }
-
-    // 値のセットのためMyWindowで呼び出す
-    // public void setEditlPanel(EditTodoPanel editPanel) {
-    //     this.editPanel = editPanel;
-    // }
 }
