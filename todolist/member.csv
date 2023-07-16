@@ -3,4 +3,5 @@ id,name,email,password,accountType
 3,Kanonnon,kanonnon@test.com,kanon1234,Private
 4,aaaaaaaa,a@test.com,kanon1234,Private
 5,aaa,aa@test.com,kanon1234,Private
-1,kanonだよ,kanon@test.com,kanon1234,Public
+1,kanon,kanon@test.com,kanon1234,Private
+6,kanon,kanonnon1@test.com,kanon1234,Public
