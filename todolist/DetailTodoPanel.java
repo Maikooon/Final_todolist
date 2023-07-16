@@ -21,6 +21,7 @@ public class DetailTodoPanel extends JPanel {
     private JLabel updatedAtLabel;
     private Map<String, String> members;
     private EditTodoPanel editPanel; // 編集画面のデータのセットに用いる
+    private JPanel buttonPanel;
 
     public DetailTodoPanel() {
         // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
@@ -75,7 +76,7 @@ public class DetailTodoPanel extends JPanel {
         headerPanel.add(addButton, BorderLayout.EAST);
 
         // Editボタン・Archiveボタン・Deleteボタンの生成
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton editButton = new JButton("Edit");
         JButton archiveButton = new JButton("Archive");
         JButton deleteButton = new JButton("Delete");
@@ -135,14 +136,6 @@ public class DetailTodoPanel extends JPanel {
 
         // インスタンス変数membersに値を代入
         members = readMembersFromCSV("member.csv");
-
-        // System.out.println(userIdLabel.getText());
-        // if (!isMyTodo(userIdLabel.getText())) {
-        //     Container container = buttonPanel.getParent();
-        //     container.remove(buttonPanel);
-        //     container.revalidate();
-        //     container.repaint();
-        // }
     }
 
     //  詳細画面に遷移する前に値をセットする
@@ -163,6 +156,14 @@ public class DetailTodoPanel extends JPanel {
                 priorityLabel.setText(todoDetails[6]);
                 createdAtLabel.setText(todoDetails[7]);
                 updatedAtLabel.setText(todoDetails[8]);
+
+                // 自分のタスクではない場合、Editボタン・Archiveボタン・Deleteボタンを消す
+                if (!isMyTodo(memberId)) {
+                    Container container = buttonPanel.getParent();
+                    container.remove(buttonPanel);
+                    container.revalidate();
+                    container.repaint();
+                }
             } else {
                 setDefaultLabels();
             }
@@ -220,6 +221,7 @@ public class DetailTodoPanel extends JPanel {
         return null;
     }
 
+    // 自分のタスクかどうか判別
     private boolean isMyTodo(String todoId) {
         String loginUserId = String.valueOf(LoginPanel.user_id);
         return loginUserId.equals(userIdLabel.getText());
