@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TodoListPanel extends JPanel {
+public class MyTodoListPanel extends JPanel {
     private List<String[]> todos;
     private List<String[]> members;
     private DetailTodoPanel detailPanel; // 詳細情報を表示するパネル
 
-    public TodoListPanel() {
+    public MyTodoListPanel() {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 20, 40));
 
@@ -33,7 +33,7 @@ public class TodoListPanel extends JPanel {
             String deadline = todo[5];
             String priority = todo[6];
 
-            if (!isOpen(memberId)) {
+            if (!isMyTodo(memberId)) {
                 continue;
             }
             JButton todoButton = new JButton(memberName + ": " + title + " (" + tag + ") " + deadline + " - " + priority);
@@ -62,7 +62,7 @@ public class TodoListPanel extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyTodoListPanel.this);
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
                 cardLayout.show(frame, "MainPanel");
             }
@@ -71,7 +71,7 @@ public class TodoListPanel extends JPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyTodoListPanel.this);
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
                 cardLayout.show(frame, "CreateTodoPanel");
             }
@@ -83,7 +83,7 @@ public class TodoListPanel extends JPanel {
         detailPanel.loadTodoDetails(todoId);
 
         // パネルを表示
-        Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
+        Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyTodoListPanel.this);
         CardLayout cardLayout = (CardLayout) frame.getLayout();
         cardLayout.show(frame, "DetailTodoPanel");
     }
@@ -122,19 +122,10 @@ public class TodoListPanel extends JPanel {
         return "Unknown";
     }
 
-    private boolean isOpen(String memberId) {
+    private boolean isMyTodo(String memberId) {
         String user_id = String.valueOf(LoginPanel.user_id);
-        for (String[] member : members) {
-            if (user_id.equals(memberId)) {
-                return true;
-            }
-            if (member[0].equals(memberId)) {
-                if (member[4].equals("Public")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+        if (user_id.equals(memberId)) {
+            return true;
         }
         return false;
     }
