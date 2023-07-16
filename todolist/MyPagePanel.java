@@ -1,9 +1,9 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 // マイページ画面
 
@@ -20,19 +20,19 @@ public class MyPagePanel extends JPanel {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 20, 40));
 
-        // メインのパネル
-        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); // 9行目に追加
+         // メインのパネル
+        JPanel contentPanel = new JPanel(new GridLayout(7, 2, 5, 10));
 
-        JLabel idTitleLabel = new JLabel("ID:");
+        JLabel idTitleLabel = new JLabel("User ID:");
         idLabel = new JLabel();
         JLabel nameTitleLabel = new JLabel("Name:");
         nameLabel = new JLabel();
-        JLabel emailTitleLabel = new JLabel("Title:");
+        JLabel emailTitleLabel = new JLabel("Email:");
         emailLabel = new JLabel();
-        JLabel accountTypeTitleLabel = new JLabel("Content:");
+        JLabel accountTypeTitleLabel = new JLabel("Account type:");
         accountTypeLabel = new JLabel();
 
-         // メインのパネルにラベルとフィールドを追加
+        // メインのパネルにラベルとフィールドを追加
         contentPanel.add(idTitleLabel);
         contentPanel.add(idLabel);
         contentPanel.add(nameTitleLabel);
@@ -41,6 +41,8 @@ public class MyPagePanel extends JPanel {
         contentPanel.add(emailLabel);
         contentPanel.add(accountTypeTitleLabel);
         contentPanel.add(accountTypeLabel);
+
+        loadUserData();
 
         // Backボタンの生成
         JPanel headerPanel = new JPanel(new BorderLayout());
@@ -63,8 +65,10 @@ public class MyPagePanel extends JPanel {
         // ボタンのアクション設定
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyPagePanel.this);
+            MyWindow myWindow = (MyWindow) frame;
+            myWindow.reloadPanels();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
-            cardLayout.show(frame, "TodoListPanel");
+            cardLayout.show(frame, "MainPanel");
         });
         logoutButton.addActionListener(e -> {
             int option = showConfirmationDialog("Logout Confirmation", "Are you sure you want to log out??");
@@ -74,16 +78,34 @@ public class MyPagePanel extends JPanel {
                 cardLayout.show(frame, "LoginPanel");
             }
         });
-        // editButton.addActionListener(e -> {
-        //     String todoId = idLabel.getText();
-        //     editPanel.loadTodoDetails(todoId);
-        //     Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyPagePanel.this);
-        //     CardLayout cardLayout = (CardLayout) frame.getLayout();
-        //     cardLayout.show(frame, "EditTodoPanel");
-        //     editPanel.loadTodoDetails(todoId);
-        // });
     }
 
+    // member.csvからユーザデータを取得
+    public void loadUserData() {
+        String memberId = String.valueOf(LoginPanel.user_id);
+        String memberFilePath = "member.csv";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(memberFilePath))) {
+            String line;
+            boolean isFirstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+                String[] data = line.split(",");
+                if (data[0].equals(memberId)) {
+                    idLabel.setText(data[0]);
+                    nameLabel.setText(data[1]);
+                    emailLabel.setText(data[2]);
+                    accountTypeLabel.setText(data[4]);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Logoutボタンを押されたときのダイヤログの実装
     private int showConfirmationDialog(String title, String message) {
@@ -96,5 +118,4 @@ public class MyPagePanel extends JPanel {
     // public void setEditlPanel(EditTodoPanel editPanel) {
     //     this.editPanel = editPanel;
     // }
-
 }

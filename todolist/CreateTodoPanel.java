@@ -26,7 +26,7 @@ class CreateTodoPanel extends JPanel {
         setBorder(new EmptyBorder(20, 40, 40, 40));
         
         // メインのパネル
-        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); // 9行目に追加
+        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
         JLabel titleLabel = new JLabel("Title:");
         titleTextField = new JTextField();
@@ -179,7 +179,9 @@ class CreateTodoPanel extends JPanel {
                 writer.write("\n");
                 writer.close();
                 JOptionPane.showMessageDialog(null, "Saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                Frame frame = (Frame) getParent();
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(CreateTodoPanel.this);
+                MyWindow myWindow = (MyWindow) frame;
+                myWindow.reloadPanels();
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
                 cardLayout.show(frame, "TodoListPanel");
             } catch (IOException ex) {

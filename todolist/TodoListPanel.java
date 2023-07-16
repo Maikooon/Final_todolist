@@ -123,7 +123,6 @@ public class TodoListPanel extends JPanel {
     }
 
     private boolean isOpen(String memberId) {
-        System.out.println(LoginPanel.user_id);
         String user_id = String.valueOf(LoginPanel.user_id);
         for (String[] member : members) {
             if (user_id.equals(memberId)) {

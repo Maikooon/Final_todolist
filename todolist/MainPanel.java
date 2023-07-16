@@ -14,26 +14,43 @@ class MainPanel extends JPanel {
         buttonConstraints.gridy = 1;
         centerPanel.add(buttonPanel, buttonConstraints);
 
-        JButton loginButton = new JButton("My ToDo List");
-        loginButton.setPreferredSize(new Dimension(200, 50));
-        loginButton.addActionListener(e -> {
+        JButton allTodoListButton = new JButton("All ToDo List");
+        allTodoListButton.setPreferredSize(new Dimension(200, 50));
+        allTodoListButton.addActionListener(e -> {
             Container container = this.getParent();
             if (container instanceof Frame) {
-                CardLayout cardLayout = (CardLayout) ((Frame) container).getLayout();
-                cardLayout.show(container, "TodoListPanel");
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(MainPanel.this);
+                MyWindow myWindow = (MyWindow) frame;
+                myWindow.reloadPanels();
+                CardLayout cardLayout = (CardLayout) frame.getLayout();
+                cardLayout.show(frame, "TodoListPanel");
             }
         });
-        buttonPanel.add(loginButton);
+        buttonPanel.add(allTodoListButton);
 
-        JButton signUpButton = new JButton("Logout");
-        signUpButton.setPreferredSize(new Dimension(200, 50));
-        signUpButton.addActionListener(e -> {
+        JButton myTodoListButton = new JButton("My ToDo List");
+        myTodoListButton.setPreferredSize(new Dimension(200, 50));
+        myTodoListButton.addActionListener(e -> {
+            Container container = this.getParent();
+            if (container instanceof Frame) {
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(MainPanel.this);
+                MyWindow myWindow = (MyWindow) frame;
+                myWindow.reloadPanels();
+                CardLayout cardLayout = (CardLayout) frame.getLayout();
+                cardLayout.show(frame, "MyTodoListPanel");
+            }
+        });
+        buttonPanel.add(myTodoListButton);
+
+        JButton myPageButton = new JButton("My Page");
+        myPageButton.setPreferredSize(new Dimension(200, 50));
+        myPageButton.addActionListener(e -> {
             Container container = this.getParent();
             if (container instanceof Frame) {
                 CardLayout cardLayout = (CardLayout) ((Frame) container).getLayout();
-                cardLayout.show(container, "LoginPanel");
+                cardLayout.show(container, "MyPagePanel");
             }
         });
-        buttonPanel.add(signUpButton);
+        buttonPanel.add(myPageButton);
     }
 }

@@ -66,6 +66,10 @@ class LoginPanel extends JPanel {
                     myWindow.addPanelsAfterLogin();
                     CardLayout cardLayout = (CardLayout) frame.getLayout();
                     cardLayout.show(frame, "MainPanel");
+
+                    // 入力フィールドをクリア
+                    emailTextField.setText("");
+                    passwordField.setText("");
                 } else {
                     JOptionPane.showMessageDialog(LoginPanel.this, "Invalid login credentials. Please try again.");
                 }

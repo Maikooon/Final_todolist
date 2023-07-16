@@ -42,7 +42,7 @@ public class EditTodoPanel extends JPanel {
         // メインのパネル
         JPanel contentPanel = new JPanel(new GridLayout(9, 3, 5, 10));
 
-        JLabel idTitleLabel = new JLabel("ID:");
+        JLabel idTitleLabel = new JLabel("Task ID:");
         idLabel = new JLabel();
         JLabel nameTitleLabel = new JLabel("Name:");
         nameLabel = new JLabel();
@@ -130,6 +130,8 @@ public class EditTodoPanel extends JPanel {
         saveButton.addActionListener(new SaveButtonListener());
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(EditTodoPanel.this);
+            MyWindow myWindow = (MyWindow) frame;
+            myWindow.reloadPanels();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "TodoListPanel");
         });
@@ -259,7 +261,9 @@ public class EditTodoPanel extends JPanel {
                 writer.write("\n");
                 writer.close();
                 JOptionPane.showMessageDialog(null, "Saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                Frame frame = (Frame) getParent();
+                Frame frame = (Frame) SwingUtilities.getWindowAncestor(EditTodoPanel.this);
+                MyWindow myWindow = (MyWindow) frame;
+                myWindow.reloadPanels();
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
                 cardLayout.show(frame, "TodoListPanel");
             } catch (IOException ex) {

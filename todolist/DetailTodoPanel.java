@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class DetailTodoPanel extends JPanel {
     private JLabel idLabel;
+    private JLabel userIdLabel;
     private JLabel nameLabel;
     private JLabel titleLabel;
     private JLabel contentLabel;
@@ -27,10 +28,10 @@ public class DetailTodoPanel extends JPanel {
         setBorder(new EmptyBorder(20, 40, 20, 40));
 
         // メインのパネル
-        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); // 9行目に追加
+        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
-        JLabel idTitleLabel = new JLabel("ID:");
         idLabel = new JLabel();
+        userIdLabel = new JLabel();
         JLabel nameTitleLabel = new JLabel("Name:");
         nameLabel = new JLabel();
         JLabel titleTitleLabel = new JLabel("Title:");
@@ -48,9 +49,7 @@ public class DetailTodoPanel extends JPanel {
         JLabel updatedAtTitleLabel = new JLabel("Updated At:");
         updatedAtLabel = new JLabel();
 
-         // メインのパネルにラベルとフィールドを追加
-        contentPanel.add(idTitleLabel);
-        contentPanel.add(idLabel);
+        // メインのパネルにラベルとフィールドを追加
         contentPanel.add(nameTitleLabel);
         contentPanel.add(nameLabel);
         contentPanel.add(titleTitleLabel);
@@ -93,6 +92,8 @@ public class DetailTodoPanel extends JPanel {
         // 5つのボタンのアクション設定
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
+            MyWindow myWindow = (MyWindow) frame;
+            myWindow.reloadPanels();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "TodoListPanel");
         });
@@ -114,6 +115,8 @@ public class DetailTodoPanel extends JPanel {
             if (option == JOptionPane.YES_OPTION) {
                 archiveTodo();
                 Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
+                MyWindow myWindow = (MyWindow) frame;
+                myWindow.reloadPanels();
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
                 cardLayout.show(frame, "TodoListPanel");
             }
@@ -123,6 +126,8 @@ public class DetailTodoPanel extends JPanel {
             if (option == JOptionPane.YES_OPTION) {
                 deleteTodo();
                 Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
+                MyWindow myWindow = (MyWindow) frame;
+                myWindow.reloadPanels();
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
                 cardLayout.show(frame, "TodoListPanel");
             }
@@ -130,6 +135,14 @@ public class DetailTodoPanel extends JPanel {
 
         // インスタンス変数membersに値を代入
         members = readMembersFromCSV("member.csv");
+
+        // System.out.println(userIdLabel.getText());
+        // if (!isMyTodo(userIdLabel.getText())) {
+        //     Container container = buttonPanel.getParent();
+        //     container.remove(buttonPanel);
+        //     container.revalidate();
+        //     container.repaint();
+        // }
     }
 
     //  詳細画面に遷移する前に値をセットする
@@ -140,7 +153,8 @@ public class DetailTodoPanel extends JPanel {
             String memberId = todoDetails[1];
             String name = members.get(memberId);
             if (name != null) {
-                idLabel.setText(todoDetails[0]); // IDを設定
+                idLabel.setText(todoDetails[0]);
+                userIdLabel.setText(todoDetails[1]);
                 nameLabel.setText(name);
                 titleLabel.setText(todoDetails[2]);
                 contentLabel.setText(todoDetails[3]);
@@ -204,6 +218,11 @@ public class DetailTodoPanel extends JPanel {
         }
 
         return null;
+    }
+
+    private boolean isMyTodo(String todoId) {
+        String loginUserId = String.valueOf(LoginPanel.user_id);
+        return loginUserId.equals(userIdLabel.getText());
     }
 
     // アーカイブの処理
