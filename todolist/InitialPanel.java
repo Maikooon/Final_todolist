@@ -1,15 +1,29 @@
-// top画面
-// signupかloginを選ぶ
-
 import javax.swing.*;
 import java.awt.*;
 
 class InitialPanel extends JPanel {
     InitialPanel() {
-        setLayout(null);
+        setLayout(new BorderLayout());
+
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        add(centerPanel, BorderLayout.CENTER);
+
+        JLabel titleLabel = new JLabel("Welcome ToDo List!!!");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        GridBagConstraints titleConstraints = new GridBagConstraints();
+        titleConstraints.gridx = 0;
+        titleConstraints.gridy = 0;
+        titleConstraints.insets = new Insets(0, 0, 20, 0);
+        centerPanel.add(titleLabel, titleConstraints);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        GridBagConstraints buttonConstraints = new GridBagConstraints();
+        buttonConstraints.gridx = 0;
+        buttonConstraints.gridy = 1;
+        centerPanel.add(buttonPanel, buttonConstraints);
 
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(250, 100, 200, 50);
+        loginButton.setPreferredSize(new Dimension(200, 50));
         loginButton.addActionListener(e -> {
             Container container = this.getParent();
             if (container instanceof Frame) {
@@ -17,10 +31,10 @@ class InitialPanel extends JPanel {
                 cardLayout.show(container, "LoginPanel");
             }
         });
-        add(loginButton);
+        buttonPanel.add(loginButton);
 
         JButton signUpButton = new JButton("Sign Up");
-        signUpButton.setBounds(250, 200, 200, 50);
+        signUpButton.setPreferredSize(new Dimension(200, 50));
         signUpButton.addActionListener(e -> {
             Container container = this.getParent();
             if (container instanceof Frame) {
@@ -28,6 +42,6 @@ class InitialPanel extends JPanel {
                 cardLayout.show(container, "SignUpPanel");
             }
         });
-        add(signUpButton);
+        buttonPanel.add(signUpButton);
     }
 }

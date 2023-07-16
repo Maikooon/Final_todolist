@@ -17,10 +17,11 @@ public class DetailTodoPanel extends JPanel {
     private JLabel updatedAtLabel;
 
     private Map<String, String> members;
+    private EditTodoPanel editPanel;
 
     public DetailTodoPanel() {
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(10, 10, 10, 10));
+        setBorder(new EmptyBorder(20, 40, 20, 40));
 
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); // 9行目に追加
 
@@ -99,11 +100,11 @@ public class DetailTodoPanel extends JPanel {
 
         editButton.addActionListener(e -> {
             String todoId = idLabel.getText();
-            EditTodoPanel editTodoPanel = new EditTodoPanel(todoId);
+            editPanel.loadTodoDetails(todoId);
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "EditTodoPanel");
-            editTodoPanel.loadTodoDetails(todoId);
+            editPanel.loadTodoDetails(todoId);
         });
 
         archiveButton.addActionListener(e -> {
@@ -295,6 +296,10 @@ public class DetailTodoPanel extends JPanel {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 new Object[] { "Yes", "Cancel" }, "Yes");
+    }
+
+    public void setEditlPanel(EditTodoPanel editPanel) {
+        this.editPanel = editPanel;
     }
 
 }

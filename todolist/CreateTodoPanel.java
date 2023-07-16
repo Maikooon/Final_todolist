@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +21,10 @@ class CreateTodoPanel extends JPanel {
 
     // ラベルとボタンの配置
     public CreateTodoPanel() {
-        setLayout(new GridLayout(8, 2, 8, 10));
-        setPreferredSize(new Dimension(400, 400));
+        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(20, 40, 40, 40));
+        
+        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); // 9行目に追加
 
         JLabel titleLabel = new JLabel("Title:");
         titleTextField = new JTextField();
@@ -38,46 +42,51 @@ class CreateTodoPanel extends JPanel {
         priorityComboBox = new JComboBox<>(priorityOptions);
 
         JLabel deadlineLabel = new JLabel("Deadline:");
-        JLabel yearLabel = new JLabel("Year:");
-        JLabel monthLabel = new JLabel("Month:");
-        JLabel dayLabel = new JLabel("Day:");
 
+        JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         yearComboBox = new JComboBox<>(getYearOptions());
         monthComboBox = new JComboBox<>(getMonthOptions());
         dayComboBox = new JComboBox<>();
+        datePanel.add(yearComboBox);
+        datePanel.add(monthComboBox);
+        datePanel.add(dayComboBox);
 
         // 年と月の選択が変更されたときに日の選択肢を更新する
         yearComboBox.addActionListener(new DateSelectionListener());
         monthComboBox.addActionListener(new DateSelectionListener());
 
+        // テキストボックスとコンボボックスをパネルに追加
+        contentPanel.add(titleLabel);
+        contentPanel.add(titleTextField);
+        contentPanel.add(contentLabel);
+        contentPanel.add(contentScrollPane);
+        contentPanel.add(tagLabel);
+        contentPanel.add(tagComboBox);
+        contentPanel.add(deadlineLabel);
+        contentPanel.add(datePanel);
+        contentPanel.add(priorityLabel);
+        contentPanel.add(priorityComboBox);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        JButton backButton = new JButton("Back");
+        headerPanel.add(backButton, BorderLayout.WEST);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton saveButton = new JButton("Save");
+        buttonPanel.add(saveButton);
+
+        setLayout(new BorderLayout());
+        add(headerPanel, BorderLayout.NORTH);
+        add(contentPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+
         saveButton.addActionListener(new SaveButtonListener());
 
-        JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.previous(frame); // 先頭のページに切り替え
         });
-
-        // テキストボックスとコンボボックスをパネルに追加
-        add(titleLabel);
-        add(titleTextField);
-        add(contentLabel);
-        add(contentScrollPane);
-        add(tagLabel);
-        add(tagComboBox);
-        add(deadlineLabel);
-        add(yearLabel);
-        add(yearComboBox);
-        add(monthLabel);
-        add(monthComboBox);
-        add(dayLabel);
-        add(dayComboBox);
-        add(priorityLabel);
-        add(priorityComboBox);
-        add(saveButton);
-        add(backButton);
     }
 
     // 年と月の選択が変更されたときに日の選択肢を更新する

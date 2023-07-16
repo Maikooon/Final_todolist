@@ -2,6 +2,7 @@
 // ユーザがフィールドにユーザ情報を入れたらそれを取得してバリデーションの確認をし、OKだったらCSVファイルにユーザ情報を保存
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,53 +19,56 @@ public class SignUpPanel extends JPanel {
 
     // ラベルとボタンの配置
     public SignUpPanel() {
-        setLayout(new GridLayout(7, 2, 8, 10));
-        setPreferredSize(new Dimension(400, 400));
+        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(20, 40, 40, 40));
+
+        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
         JLabel nameLabel = new JLabel("Display Name:");
         nameTextField = new JTextField();
-
         JLabel emailLabel = new JLabel("Email:");
         emailTextField = new JTextField();
-
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField();
-
         JLabel passwordConfirmLabel = new JLabel("Password Confirm:");
         passwordConfirmField = new JPasswordField();
-
         JLabel accountTypeLabel = new JLabel("Account Type:");
         publicRadioButton = new JRadioButton("Public");
         privateRadioButton = new JRadioButton("Private");
 
-        ButtonGroup accountTypeButtonGroup = new ButtonGroup();
-        accountTypeButtonGroup.add(publicRadioButton);
-        accountTypeButtonGroup.add(privateRadioButton);
+        contentPanel.add(nameLabel);
+        contentPanel.add(nameTextField);
+        contentPanel.add(emailLabel);
+        contentPanel.add(emailTextField);
+        contentPanel.add(passwordLabel);
+        contentPanel.add(passwordField);
+        contentPanel.add(passwordConfirmLabel);
+        contentPanel.add(passwordConfirmField);
+        contentPanel.add(accountTypeLabel);
+        contentPanel.add(publicRadioButton);
+        contentPanel.add(new JLabel()); // レイアウトを調整するための空のラベル
+        contentPanel.add(privateRadioButton);
 
-        JButton signUpButton = new JButton("Sign Up");
-        signUpButton.addActionListener(new signUpButtonListener());
-
+        JPanel headerPanel = new JPanel(new BorderLayout());
         JButton backButton = new JButton("Back");
+        headerPanel.add(backButton, BorderLayout.WEST);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton signUpButton = new JButton("Sign Up");
+        signUpButton.setPreferredSize(new Dimension(200, 50));
+        buttonPanel.add(signUpButton);
+
+        setLayout(new BorderLayout());
+        add(headerPanel, BorderLayout.NORTH);
+        add(contentPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.show(frame, "InitialPanel");
         });
-
-        add(nameLabel);
-        add(nameTextField);
-        add(emailLabel);
-        add(emailTextField);
-        add(passwordLabel);
-        add(passwordField);
-        add(passwordConfirmLabel);
-        add(passwordConfirmField);
-        add(accountTypeLabel);
-        add(publicRadioButton);
-        add(new JLabel()); // レイアウトを調整するための空のラベル
-        add(privateRadioButton);
-        add(signUpButton);
-        add(backButton);
+        signUpButton.addActionListener(new signUpButtonListener());
     }
 
     // 「Sign Up」ボタンが押されたときの処理（フィールドの値を取得してバリデーションチェックをする）
@@ -116,6 +120,10 @@ public class SignUpPanel extends JPanel {
 
             JOptionPane.showMessageDialog(SignUpPanel.this, "Member saved successfully!");
             clearFields();
+
+            Frame frame = (Frame) getParent();
+            CardLayout cardLayout = (CardLayout) frame.getLayout();
+            cardLayout.show(frame, "LoginPanel");
         }
     }
 

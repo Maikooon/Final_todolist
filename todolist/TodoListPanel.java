@@ -16,7 +16,7 @@ public class TodoListPanel extends JPanel {
 
     public TodoListPanel() {
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(10, 10, 10, 10));
+        setBorder(new EmptyBorder(20, 40, 20, 40));
 
         todos = readCSV("todos.csv");
         members = readCSV("member.csv");
@@ -33,6 +33,9 @@ public class TodoListPanel extends JPanel {
             String deadline = todo[5];
             String priority = todo[6];
 
+            if (!checkOpen(memberId)) {
+                continue;
+            }
             JButton todoButton = new JButton(memberName + ": " + title + " (" + tag + ") " + deadline + " - " + priority);
             todoButton.setPreferredSize(new Dimension(350, 50));
             todoButton.addActionListener(new ActionListener() {
@@ -61,7 +64,7 @@ public class TodoListPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Frame frame = (Frame) SwingUtilities.getWindowAncestor(TodoListPanel.this);
                 CardLayout cardLayout = (CardLayout) frame.getLayout();
-                cardLayout.show(frame, "TodoPanel");
+                cardLayout.show(frame, "MainPanel");
             }
         });
 
@@ -117,5 +120,22 @@ public class TodoListPanel extends JPanel {
             }
         }
         return "Unknown";
+    }
+
+    private boolean checkOpen(String memberId) {
+        String user_id = String.valueOf(LoginPanel.user_id);
+        for (String[] member : members) {
+            if (user_id.equals(memberId)) {
+                return true;
+            }
+            if (member[0].equals(memberId)) {
+                if (member[4].equals("Public")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 }

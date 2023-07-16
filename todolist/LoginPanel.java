@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,14 +14,35 @@ class LoginPanel extends JPanel {
     public static int user_id; // ユーザーIDを保持する変数
 
     public LoginPanel() {
-        // ラベルとボタンの配置
-        setLayout(null);
+        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(20, 40, 40, 40));
+
+        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); 
+
+        JLabel emailLabel = new JLabel("Email: ");
         emailTextField = new JTextField();
-        emailTextField.setBounds(50, 400, 150, 30);
+        emailTextField.setPreferredSize(new Dimension(400, 50));
+        JLabel passwordLabel = new JLabel("Password: ");
         passwordField = new JPasswordField();
-        passwordField.setBounds(210, 400, 150, 30);
+        passwordField.setPreferredSize(new Dimension(400, 50));
+
+        contentPanel.add(emailLabel);
+        contentPanel.add(emailTextField);
+        contentPanel.add(passwordLabel);
+        contentPanel.add(passwordField);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        JButton backButton = new JButton("Back");
+        headerPanel.add(backButton, BorderLayout.WEST);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(50, 480, 100, 30);
+        loginButton.setPreferredSize(new Dimension(200, 50));
+        buttonPanel.add(loginButton);
+
+        add(headerPanel, BorderLayout.NORTH);
+        add(contentPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         // 「Login」ボタンが押されたときの処理（フィールドの値を取得してemailとpasswordの組み合わせが正しいかチェック）
         loginButton.addActionListener(new ActionListener() {
@@ -30,32 +53,20 @@ class LoginPanel extends JPanel {
 
                 if (checkLogin(email, password)) {
                     user_id = getUserIdByEmail(email); // 入力されたEmailからユーザーIDを取得してフィールドに代入
-
+                    JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!");
                     Frame frame = (Frame) getParent();
                     CardLayout cardLayout = (CardLayout) frame.getLayout();
-                    cardLayout.show(frame, "TodoPanel"); // ページ名を指定して切り替え
+                    cardLayout.show(frame, "MainPanel"); // ページ名を指定して切り替え
                 } else {
                     JOptionPane.showMessageDialog(LoginPanel.this, "Invalid login credentials. Please try again.");
                 }
             }
         });
-        add(loginButton);
-
-        JButton backButton = new JButton("Back");
-        backButton.setBounds(550, 10, 100, 25);
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
             cardLayout.first(frame); // 先頭のページに切り替え
         });
-
-        // ラベルとボタンの配置
-        add(new JLabel("Email:", SwingConstants.LEFT));
-        add(emailTextField);
-        add(new JLabel("Password:", SwingConstants.LEFT));
-        add(passwordField);
-        add(loginButton);
-        add(backButton);
     }
 
     // emailとpasswordの組み合わせが正しいかチェック

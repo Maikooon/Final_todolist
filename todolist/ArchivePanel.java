@@ -33,7 +33,7 @@ public class ArchivePanel extends JPanel {
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
-            cardLayout.show(frame, "TodoPanel"); // 一つ前のページに切り替え
+            cardLayout.show(frame, "MainPanel"); // 一つ前のページに切り替え
         });
     }
 
