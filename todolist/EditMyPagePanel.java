@@ -37,9 +37,9 @@ public class EditMyPagePanel extends JPanel {
         passwordLabel = new JLabel();
         JLabel accountTypeTitleLabel = new JLabel("Account Type:");
         accountTypeLabel = new JLabel();
-        ButtonGroup accountTypeGroup = new ButtonGroup(); // どちらかしか選べなくする
-        accountTypeGroup.add(publicRadioButton);
-        accountTypeGroup.add(privateRadioButton);
+        JLabel accountTypeLabel = new JLabel("Account Type:");
+        publicRadioButton = new JRadioButton("Public");
+        privateRadioButton = new JRadioButton("Private");
 
         // メインのパネルにラベルとフィールドを追加
         contentPanel.add(idTitleLabel);
@@ -191,6 +191,7 @@ public class EditMyPagePanel extends JPanel {
                     idLabel.setText(data[0]);
                     nameLabel.setText(data[1]);
                     emailLabel.setText(data[2]);
+                    passwordLabel.setText(data[3]);
                     accountTypeLabel.setText(data[4]);
                     break;
                 }
