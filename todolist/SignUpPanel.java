@@ -88,7 +88,7 @@ public class SignUpPanel extends JPanel {
 
             // バリデーションチェック
             if (!isValidName(name)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this, "Invalid name. Name should contain only alphabets and have a length between 3 and 20 characters.");
+                JOptionPane.showMessageDialog(SignUpPanel.this, "Invalid name. Name should be between 3 and 30 characters.");
                 return;
             }
 
