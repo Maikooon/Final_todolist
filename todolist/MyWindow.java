@@ -34,8 +34,8 @@ public class MyWindow extends Frame {
         setLayout(cardLayout);
 
         // icon
-        URL imageIconUrl = getClass().getClassLoader().getResource("iconimage.png");
-        if (imageIconUrl != null) {
+        URL imageIconUrl = getClass().getClassLoader().getResource("iconimage.png");//MACはこの行をけして実行してほしい
+        if (imageIconUrl != null) { 
             ImageIcon icon = new ImageIcon(imageIconUrl);
             setIconImage(icon.getImage());
         }
