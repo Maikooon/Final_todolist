@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.io.*;
 
-// 新規Todo作成画面
+// new Todo
 
 class CreateTodoPanel extends JPanel {
     private JTextField titleTextField;
@@ -21,11 +21,11 @@ class CreateTodoPanel extends JPanel {
     private JComboBox<Integer> dayComboBox;
 
     public CreateTodoPanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        // layout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
         
-        // メインのパネル
+        // main panel
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
         JLabel titleLabel = new JLabel("Title:");
@@ -41,7 +41,7 @@ class CreateTodoPanel extends JPanel {
         priorityComboBox = new JComboBox<>(priorityOptions);
         JLabel deadlineLabel = new JLabel("Deadline:");
 
-        // 日付選択部分を1つのパネルにまとめる
+        // date 
         JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         yearComboBox = new JComboBox<>(getYearOptions());
         monthComboBox = new JComboBox<>(getMonthOptions());

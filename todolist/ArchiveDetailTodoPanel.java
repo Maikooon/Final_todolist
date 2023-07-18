@@ -5,8 +5,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-// Todoの詳細画面
-// TodoListPanelで押したTodoを表示
+// Todo detail panel
+// display todo from TodoListPanel
 
 public class ArchiveDetailTodoPanel extends JPanel {
     private JLabel idLabel;
@@ -23,11 +23,11 @@ public class ArchiveDetailTodoPanel extends JPanel {
     private JPanel buttonPanel;
 
     public ArchiveDetailTodoPanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        // layout : gridlayout
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 20, 40));
 
-        // メインのパネル
+        // main panel
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
         idLabel = new JLabel();
@@ -49,7 +49,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
         JLabel updatedAtTitleLabel = new JLabel("Updated At:");
         updatedAtLabel = new JLabel();
 
-        // メインのパネルにラベルとフィールドを追加
+        // add label and field to main panel
         contentPanel.add(nameTitleLabel);
         contentPanel.add(nameLabel);
         contentPanel.add(titleTitleLabel);
@@ -67,25 +67,25 @@ public class ArchiveDetailTodoPanel extends JPanel {
         contentPanel.add(updatedAtTitleLabel);
         contentPanel.add(updatedAtLabel);
 
-        // BackボタンとAddボタンの生成
+        // generate Back button and add button
         JPanel headerPanel = new JPanel(new BorderLayout());
         JButton backButton = new JButton("Back");
         JButton addButton = new JButton("+");
         headerPanel.add(backButton, BorderLayout.WEST);
         headerPanel.add(addButton, BorderLayout.EAST);
 
-        // Unarchiveボタンの生成
+        // generate Unarchive button
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton unarchiveButton = new JButton("Unarchive");
         buttonPanel.add(unarchiveButton);
 
-        // 全体のレイアウト
-        //setLayout(new BorderLayout());
+        // over layout
+        // setLayout(new BorderLayout());
         add(headerPanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // ボタンのアクション設定
+        // button action
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(ArchiveDetailTodoPanel.this);
             MyWindow myWindow = (MyWindow) frame;
@@ -99,7 +99,8 @@ public class ArchiveDetailTodoPanel extends JPanel {
             cardLayout.show(frame, "CreateTodoPanel");
         });
         unarchiveButton.addActionListener(e -> {
-            int option = showConfirmationDialog("Unarchive Confirmation", "Are you sure you want to unarchive this todo?");
+            int option = showConfirmationDialog("Unarchive Confirmation",
+                    "Are you sure you want to unarchive this todo?");
             if (option == JOptionPane.YES_OPTION) {
                 archiveTodo();
                 Frame frame = (Frame) SwingUtilities.getWindowAncestor(ArchiveDetailTodoPanel.this);
@@ -109,12 +110,12 @@ public class ArchiveDetailTodoPanel extends JPanel {
                 cardLayout.show(frame, "TodoListPanel");
             }
         });
-        // インスタンス変数membersに値を代入
+        // input into members
         members = readMembersFromCSV("member.csv");
     }
 
-    //  詳細画面に遷移する前に値をセットする
-    // TodoListpanelでこのメソッドを呼び出している
+    // set x from move to detail pane
+    // call methods on TodoListpanel
     public void loadTodoDetails(String todoId) {
         String[] todoDetails = readTodoDetailsFromCSV(todoId);
         if (todoDetails != null) {
@@ -139,7 +140,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
         }
     }
 
-    // データの不整合が起きたときにラベルをN/Aにする
+    // change label
     private void setDefaultLabels() {
         idLabel.setText("N/A");
         nameLabel.setText("N/A");
@@ -152,7 +153,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
         updatedAtLabel.setText("N/A");
     }
 
-    // 引数でmember.csvを受け取ってユーザ情報を読み込む
+    // read informatino fron member.csv
     private Map<String, String> readMembersFromCSV(String fileName) {
         Map<String, String> members = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -169,7 +170,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
         return members;
     }
 
-    // 引数でtodoIdを受け取ってarchive.csvからTodoの詳細情報を読み込む
+    // get todo info from archive.csv
     private String[] readTodoDetailsFromCSV(String todoId) {
         String fileName = "archive.csv";
 
@@ -187,9 +188,10 @@ public class ArchiveDetailTodoPanel extends JPanel {
 
         return null;
     }
-    // アーカイブの処理
+
+    // archive
     private void archiveTodo() {
-        String todoId = idLabel.getText(); // IDラベルからtodoIdを取得
+        String todoId = idLabel.getText(); // get todoId
         String selectedTodo = null;
         try {
             File todosFile = new File("todos.csv");
@@ -207,9 +209,9 @@ public class ArchiveDetailTodoPanel extends JPanel {
             }
 
             if (selectedTodo != null) {
-                File tempFile = new File("temp.csv"); // 退避ファイル
+                File tempFile = new File("temp.csv"); //exi file
                 try (BufferedReader br = new BufferedReader(new FileReader(archiveFile));
-                     BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
 
                     String line;
                     while ((line = br.readLine()) != null) {
@@ -219,7 +221,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
                         }
                     }
                 }
-                archiveFile.delete(); // archive.csvを更新した内容で置き換える
+                archiveFile.delete(); // replace new info 
                 tempFile.renameTo(archiveFile);
 
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(todosFile, true))) {
@@ -234,7 +236,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
 
     }
 
-    // UnArchiveボタンを押されたときのダイヤログの実装
+    // push the UnArchive button 
     private int showConfirmationDialog(String title, String message) {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
