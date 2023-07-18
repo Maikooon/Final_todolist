@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-// マイページ画面
+// Mypage panel
 
 public class MyPagePanel extends JPanel {
     private JLabel spaceLabel;
@@ -15,21 +15,19 @@ public class MyPagePanel extends JPanel {
     private JLabel accountTypeLabel;
 
     public MyPagePanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        //lyaout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(40, 60, 50, 70));
 
-        // タイトルラベルの作成
+        // title abel
         JLabel titleLabel = new JLabel("My Profile");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD,30));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
 
-
-         // メインのパネル
-
+        // main panel
         JPanel contentPanel = new JPanel(new GridLayout(7, 2, 5, 10));
         JLabel SpaceLabel = new JLabel("");
-        spaceLabel=new JLabel();
+        spaceLabel = new JLabel();
         JLabel idTitleLabel = new JLabel("User ID:");
         idLabel = new JLabel();
         JLabel nameTitleLabel = new JLabel("Name:");
@@ -39,7 +37,7 @@ public class MyPagePanel extends JPanel {
         JLabel accountTypeTitleLabel = new JLabel("Account type:");
         accountTypeLabel = new JLabel();
 
-        // メインのパネルにラベルとフィールドを追加
+        // add label & field to main panel
         contentPanel.add(SpaceLabel);
         contentPanel.add(spaceLabel);
         contentPanel.add(SpaceLabel);
@@ -55,28 +53,27 @@ public class MyPagePanel extends JPanel {
 
         loadUserData();
 
-        // Backボタンとタイトルを含むパネル
-        JButton backButton;  // Backボタンの定義
+        // Back & titel button
+        JButton backButton; // Back button
         backButton = new JButton("Back");
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(backButton, BorderLayout.WEST);
         titlePanel.add(titleLabel, BorderLayout.CENTER);
 
-
-        // Editボタン・Logoutボタンの生成
+        // generate Edit button and Logout button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton editButton = new JButton("Edit");
         JButton logoutButton = new JButton("Logout");
         buttonPanel.add(editButton);
         buttonPanel.add(logoutButton);
 
-        // 全体のレイアウト
+        // layout
         setLayout(new BorderLayout());
         add(titlePanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // ボタンのアクション設定
+        // button avtion
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyPagePanel.this);
             MyWindow myWindow = (MyWindow) frame;
@@ -101,7 +98,7 @@ public class MyPagePanel extends JPanel {
         });
     }
 
-    // member.csvからユーザデータを取得
+    // get userdata from member.csv
     public void loadUserData() {
         String memberId = String.valueOf(LoginPanel.user_id);
         String memberFilePath = "member.csv";
@@ -128,7 +125,7 @@ public class MyPagePanel extends JPanel {
         }
     }
 
-    // Logoutボタンを押されたときのダイヤログの実装
+    // ///////dialog when Logout button is pushed 
     private int showConfirmationDialog(String title, String message) {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,

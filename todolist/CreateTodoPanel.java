@@ -21,10 +21,10 @@ class CreateTodoPanel extends JPanel {
     private JComboBox<Integer> dayComboBox;
 
     public CreateTodoPanel() {
-        // layout 
+        // layout
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
-        
+
         // main panel
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
@@ -41,7 +41,7 @@ class CreateTodoPanel extends JPanel {
         priorityComboBox = new JComboBox<>(priorityOptions);
         JLabel deadlineLabel = new JLabel("Deadline:");
 
-        // date 
+        // date
         JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         yearComboBox = new JComboBox<>(getYearOptions());
         monthComboBox = new JComboBox<>(getMonthOptions());
@@ -52,7 +52,7 @@ class CreateTodoPanel extends JPanel {
         datePanel.add(monthComboBox);
         datePanel.add(dayComboBox);
 
-        // メインのパネルにラベルとフィールドを追加
+        // add tilte and field
         contentPanel.add(titleLabel);
         contentPanel.add(titleTextField);
         contentPanel.add(contentLabel);
@@ -64,24 +64,24 @@ class CreateTodoPanel extends JPanel {
         contentPanel.add(priorityLabel);
         contentPanel.add(priorityComboBox);
 
-        // Backボタンの生成
+        // Back button
         JPanel headerPanel = new JPanel(new BorderLayout());
         JButton backButton = new JButton("Back");
         headerPanel.add(backButton, BorderLayout.WEST);
 
-        // Saveボタンの生成
+        // Save button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton saveButton = new JButton("Save");
         saveButton.setPreferredSize(new Dimension(200, 50));
         buttonPanel.add(saveButton);
 
-        // 全体のレイアウト
+        // layout
         setLayout(new BorderLayout());
         add(headerPanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // ボタンアクション
+        // button action
         saveButton.addActionListener(new SaveButtonListener());
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
@@ -97,7 +97,7 @@ class CreateTodoPanel extends JPanel {
         }
     }
 
-    // 年のセレクトボックス：現在の西暦から10年分のボタンを生成
+    // selvet year box
     private Integer[] getYearOptions() {
         int currentYear = LocalDate.now().getYear();
         Integer[] years = new Integer[10];
@@ -107,17 +107,17 @@ class CreateTodoPanel extends JPanel {
         return years;
     }
 
-    // 月のセレクトボックス：英語表記
+    // select month
     private String[] getMonthOptions() {
         return new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September",
                 "October", "November", "December" };
     }
 
-    // 日のセレクトボックス：年月に合わせて何日まで表示するかを調節
+    // select date
     private void updateDayOptions() {
         int selectedYear = (int) yearComboBox.getSelectedItem();
         int selectedMonth = Arrays.asList(getMonthOptions()).indexOf(monthComboBox.getSelectedItem()) + 1;
-        int daysInMonth = LocalDate.of(selectedYear, selectedMonth, 1).lengthOfMonth();// 日のセレクトボックス：年月に合わせて何日まで表示するかを調節
+        int daysInMonth = LocalDate.of(selectedYear, selectedMonth, 1).lengthOfMonth();// select day
         Integer[] days = new Integer[daysInMonth];
         for (int i = 0; i < daysInMonth; i++) {
             days[i] = i + 1;
@@ -126,11 +126,11 @@ class CreateTodoPanel extends JPanel {
         dayComboBox.setModel(model);
     }
 
-    // Saveボタンが押されたときの処理（フィールドの値を取得してバリデーションチェック）
+    // Save button is pushed
     class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // 入力された情報を取得
-            int user_id = LoginPanel.user_id; // LoginPanelのクラス変数からログイン中のユーザを取得
+            // get user data
+            int user_id = LoginPanel.user_id; // get login user form LoginPanel
             String title = titleTextField.getText();
             String content = contentTextArea.getText();
             String tag = (String) tagComboBox.getSelectedItem();
@@ -143,7 +143,7 @@ class CreateTodoPanel extends JPanel {
             String created_at = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             String updated_at = created_at;
 
-            // バリデーションチェック
+            // validation
             if (!validateTitle(title)) {
                 JOptionPane.showMessageDialog(null, "Title should be between 3 and 30 characters.", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -169,16 +169,16 @@ class CreateTodoPanel extends JPanel {
                 return;
             }
 
-            // todoIdの付与
+            // todoId
             int id = assignId();
 
-            // todos.csvに保存
+            // save todos.csv
             try {
                 FileWriter writer = new FileWriter("todos.csv", true);
                 writer.write(toCSV(id, user_id, title, content, tag, priority, deadline, created_at, updated_at));
                 writer.write("\n");
                 writer.close();
-                // 入力フィールドをクリア
+                // clear filed
                 titleTextField.setText("");
                 contentTextArea.setText("");
                 tagComboBox.setSelectedIndex(0);
@@ -198,44 +198,44 @@ class CreateTodoPanel extends JPanel {
             }
         }
 
-        // titleは3~30文字
+        // title ;3-30w
         private boolean validateTitle(String title) {
             return title.length() >= 3 && title.length() <= 30;
         }
 
-        // contentは3~300文字
+        // contentw;3-300w
         private boolean validateContent(String content) {
             return content.length() >= 3 && content.length() <= 300;
         }
 
-        // tagは入力必須
+        // tag
         private boolean validateTag(String tag) {
             return tag != null && !tag.isEmpty();
         }
 
-        // 入力された締切日が今日以降の日付かチェック
+        // data after today 
         private boolean validateDeadline(LocalDate deadline) {
             LocalDate now = LocalDate.now();
             return deadline != null && deadline.isAfter(now);
         }
 
-        // priorityは入力必須
+        // priority
         private boolean validatePriority(String priority) {
             return priority != null && !priority.isEmpty();
         }
 
-        // 現在のtodoの中で最もidの値が大きいtodoのidに1を足したidを新規todoに付与（1から昇順にidを付与）
+        // generate id func 
         private int assignId() {
             int maxId = 0;
             try {
-                // todos.csvの最大idを探す
+                // search max id from archive.csv
                 BufferedReader br = new BufferedReader(new FileReader("todos.csv"));
                 String line;
-                boolean isFirstLine = true; // ヘッダ行をスキップするためのフラグ
+                boolean isFirstLine = true; // skip header
                 while ((line = br.readLine()) != null) {
                     if (isFirstLine) {
                         isFirstLine = false;
-                        continue; // ヘッダ行をスキップ
+                        continue; // skip header
                     }
                     String[] data = line.split(",");
                     if (data.length >= 1) {
@@ -246,13 +246,13 @@ class CreateTodoPanel extends JPanel {
                     }
                 }
                 br.close();
-                // archive.csvの最大idを探す
+                // search max id from archive.csv
                 br = new BufferedReader(new FileReader("archive.csv"));
-                isFirstLine = true; // ヘッダ行をスキップするためのフラグ
+                isFirstLine = true; // skip header
                 while ((line = br.readLine()) != null) {
                     if (isFirstLine) {
                         isFirstLine = false;
-                        continue; // ヘッダ行をスキップ
+                        continue; // skip header
                     }
                     String[] data = line.split(",");
                     if (data.length >= 1) {
@@ -270,8 +270,9 @@ class CreateTodoPanel extends JPanel {
         }
     }
 
-    // CSVに保存するためのデータ整形
-    private String toCSV(int id, int user_id, String title, String content, String tag, String priority, LocalDate deadline,
+    // change data type to save CSV
+    private String toCSV(int id, int user_id, String title, String content, String tag, String priority,
+            LocalDate deadline,
             String created_at, String updated_at) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String deadlineFormatted = deadline.format(formatter);

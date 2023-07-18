@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-// Todoの編集画面
-// 画面の生成部分：DetailTodoPanelとほとんど同じ
-// データの保存部分：CreateTodoPanelとほとんど同じ
+// Todo edit panel 
+//generate panel : is alike DetailTodoPanel
+//save panel : ..   CreateTodoPanel
 
 public class EditTodoPanel extends JPanel {
     private JLabel idLabel;
@@ -35,11 +35,11 @@ public class EditTodoPanel extends JPanel {
     private Map<String, String> members;
 
     public EditTodoPanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        // lyaout
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
 
-        // メインのパネル
+        // main panel
         JPanel contentPanel = new JPanel(new GridLayout(9, 3, 5, 10));
 
         JLabel idTitleLabel = new JLabel("Task ID:");
@@ -60,7 +60,7 @@ public class EditTodoPanel extends JPanel {
         JLabel deadlineTitleLabel = new JLabel("Deadline:");
         deadlineLabel = new JLabel();
 
-        // 日付選択部分を1つのパネルにまとめる
+        // select date
         JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         yearComboBox = new JComboBox<>(getYearOptions());
         monthComboBox = new JComboBox<>(getMonthOptions());
@@ -80,10 +80,10 @@ public class EditTodoPanel extends JPanel {
         JLabel updatedAtTitleLabel = new JLabel("Updated At:");
         updatedAtLabel = new JLabel();
 
-        // メインのパネルにラベルとフィールドを追加
+        // add label and filed to main panel
         contentPanel.add(idTitleLabel);
         contentPanel.add(idLabel);
-        contentPanel.add(new JLabel()); // レイアウト調整のための空のラベル
+        contentPanel.add(new JLabel()); // padding
         contentPanel.add(nameTitleLabel);
         contentPanel.add(nameLabel);
         contentPanel.add(new JLabel());
@@ -109,24 +109,24 @@ public class EditTodoPanel extends JPanel {
         contentPanel.add(updatedAtLabel);
         contentPanel.add(new JLabel());
 
-        // Backボタンの生成
+        // Back button
         JPanel headerPanel = new JPanel(new BorderLayout());
         JButton backButton = new JButton("Back");
         headerPanel.add(backButton, BorderLayout.WEST);
 
-        // Saveボタンの生成
+        // Save button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton saveButton = new JButton("Save");
         saveButton.setPreferredSize(new Dimension(200, 50));
         buttonPanel.add(saveButton);
 
-        // 全体のレイアウト
+        // overall layout
         setLayout(new BorderLayout());
         add(headerPanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // ボタンアクション
+        // button action
         saveButton.addActionListener(new SaveButtonListener());
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(EditTodoPanel.this);
@@ -136,18 +136,17 @@ public class EditTodoPanel extends JPanel {
             cardLayout.show(frame, "TodoListPanel");
         });
 
-        // インスタンス変数membersに値を代入
         members = readMembersFromCSV("member.csv");
     }
 
-    // 年と月の選択が変更されたときに日の選択肢を更新する
+    // update date when chaned
     class DateSelectionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             updateDayOptions();
         }
     }
 
-    // 年のセレクトボックス：現在の西暦から10年分のボタンを生成
+    // select box for year between 20 y
     private Integer[] getYearOptions() {
         int currentYear = LocalDate.now().getYear();
         Integer[] years = new Integer[10];
@@ -157,13 +156,13 @@ public class EditTodoPanel extends JPanel {
         return years;
     }
 
-    // 月のセレクトボックス：英語表記
+    // select month
     private String[] getMonthOptions() {
         return new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September",
                 "October", "November", "December" };
     }
 
-    // 日のセレクトボックス：年月に合わせて何日まで表示するかを調節
+    // select day
     private void updateDayOptions() {
         int selectedYear = (int) yearComboBox.getSelectedItem();
         int selectedMonth = Arrays.asList(getMonthOptions()).indexOf(monthComboBox.getSelectedItem()) + 1;
@@ -176,10 +175,10 @@ public class EditTodoPanel extends JPanel {
         dayComboBox.setModel(model);
     }
 
-    // Saveボタンが押されたときの処理
+    // Save button action
     class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // フィールドの値が入力されていなかったら元のデータを代入
+            // input general data if fiel is empty
             int id = Integer.valueOf(idLabel.getText());
             int user_id = LoginPanel.user_id;
             String title = titleTextField.getText();
@@ -191,9 +190,13 @@ public class EditTodoPanel extends JPanel {
             String priority = (String) priorityComboBox.getSelectedItem();
             priority = (priority == null || priority.isEmpty()) ? priorityLabel.getText() : priority;
             int selectedYear = yearComboBox.getSelectedItem() != null ? (int) yearComboBox.getSelectedItem() : 0;
-            int selectedMonth = monthComboBox.getSelectedItem() != null ? Arrays.asList(getMonthOptions()).indexOf(monthComboBox.getSelectedItem()) + 1 : 0;
+            int selectedMonth = monthComboBox.getSelectedItem() != null
+                    ? Arrays.asList(getMonthOptions()).indexOf(monthComboBox.getSelectedItem()) + 1
+                    : 0;
             int selectedDay = dayComboBox.getSelectedItem() != null ? (int) dayComboBox.getSelectedItem() : 0;
-            LocalDate deadline = selectedYear != 0 && selectedMonth != 0 && selectedDay != 0 ? LocalDate.of(selectedYear, selectedMonth, selectedDay) : null;
+            LocalDate deadline = selectedYear != 0 && selectedMonth != 0 && selectedDay != 0
+                    ? LocalDate.of(selectedYear, selectedMonth, selectedDay)
+                    : null;
             if (deadline == null) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 deadline = LocalDate.parse(deadlineLabel.getText(), formatter);
@@ -202,7 +205,7 @@ public class EditTodoPanel extends JPanel {
             String created_at = createdAtLabel.getText();
             String updated_at = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-            // バリデーションチェック
+            // validation check
             if (!validateTitle(title)) {
                 JOptionPane.showMessageDialog(null, "Title should be between 3 and 30 characters.", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -220,7 +223,7 @@ public class EditTodoPanel extends JPanel {
                 return;
             }
 
-            // todos.csvから一度削除
+            // delete todos.csv
             try {
                 File todosFile = new File("todos.csv");
                 File tempFile = new File("temp.csv");
@@ -260,7 +263,7 @@ public class EditTodoPanel extends JPanel {
                 writer.write(toCSV(id, user_id, title, content, tag, priority, deadline, created_at, updated_at));
                 writer.write("\n");
                 writer.close();
-                // 入力フィールドをクリア
+                // clear field
                 titleTextField.setText("");
                 contentTextArea.setText("");
                 tagComboBox.setSelectedIndex(0);
@@ -280,7 +283,7 @@ public class EditTodoPanel extends JPanel {
             }
         }
 
-        // バリデーションの内容
+        // validation
         private boolean validateTitle(String title) {
             return title.length() >= 3 && title.length() <= 30;
         }
@@ -291,13 +294,14 @@ public class EditTodoPanel extends JPanel {
 
         private boolean validateDeadline(LocalDate deadline) {
             LocalDate now = LocalDate.now();
-            return deadline.isAfter(now); // 入力された締切日が今日以降の日付かチェック
+            return deadline.isAfter(now); // check valid date
         }
 
     }
 
-    // CSVに保存するためのデータ整形
-    private String toCSV(int id, int user_id, String title, String content, String tag, String priority, LocalDate deadline,
+    // change data type in order to save for CSV
+    private String toCSV(int id, int user_id, String title, String content, String tag, String priority,
+            LocalDate deadline,
             String created_at, String updated_at) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String deadlineFormatted = deadline.format(formatter);
@@ -305,8 +309,8 @@ public class EditTodoPanel extends JPanel {
                 priority, created_at, updated_at);
     }
 
-    // 編集画面に遷移する前に値をセットする
-    // DetailTodoPanelでこのメソッドを呼び出している
+    // set value before move to edit panel
+    // call on DetailTodoPanel
     public void loadTodoDetails(String todoId) {
         String[] todoDetails = readTodoDetailsFromCSV(todoId);
         if (todoDetails != null) {
@@ -330,7 +334,7 @@ public class EditTodoPanel extends JPanel {
         }
     }
 
-    // データの不整合が起きたときにラベルをN/Aにする
+    // data false : label: N/A
     private void setDefaultLabels() {
         idLabel.setText("N/A");
         nameLabel.setText("N/A");
@@ -343,7 +347,7 @@ public class EditTodoPanel extends JPanel {
         updatedAtLabel.setText("N/A");
     }
 
-    // 引数でmember.csvを受け取ってユーザ情報を読み込む
+    // read user data from member.csv
     private Map<String, String> readMembersFromCSV(String fileName) {
         Map<String, String> members = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -360,7 +364,7 @@ public class EditTodoPanel extends JPanel {
         return members;
     }
 
-    // 引数でtodoIdを受け取ってtodos.csvからTodoの詳細情報を読み込む
+    // read detail info fron todocsv ftom todoid
     private String[] readTodoDetailsFromCSV(String todoId) {
         String fileName = "todos.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {

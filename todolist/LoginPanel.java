@@ -53,12 +53,13 @@ class LoginPanel extends JPanel {
         loginButton.setPreferredSize(new Dimension(200, 50));
         buttonPanel.add(loginButton);
 
-        // 全体のレイアウト
+        // layout
         add(titlePanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // 「Login」ボタンが押されたときの処理（フィールドの値を取得してemailとpasswordの組み合わせが正しいかチェック）
+        // 「Login」 button is pused 
+        //verify the mathing  email & password
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,8 +67,8 @@ class LoginPanel extends JPanel {
                 String password = new String(passwordField.getPassword());
 
                 if (checkLogin(email, password)) {
-                    user_id = getUserIdByEmail(email); // 入力されたEmailからユーザーIDを取得してクラス変数に代入
-                    // 入力フィールドをクリア
+                    user_id = getUserIdByEmail(email); // get user id form email 
+                    // clear input field  
                     emailTextField.setText("");
                     passwordField.setText("");
                     JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -88,7 +89,7 @@ class LoginPanel extends JPanel {
         });
     }
 
-    // emailとpasswordの組み合わせが正しいかチェック
+    // verift  email to password
     private boolean checkLogin(String email, String password) {
         try {
             String csvFile = "member.csv";
@@ -108,7 +109,7 @@ class LoginPanel extends JPanel {
         return false;
     }
 
-    // 入力されたEmailからユーザーIDを取得
+    // get user id from email 
     private int getUserIdByEmail(String email) {
         try {
             String csvFile = "member.csv";

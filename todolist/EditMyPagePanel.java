@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-// MyPageの編集画面
-// 画面の生成部分：MyPagePanelとほとんど同じ
-// データの保存部分：SignUpPanelとほとんど同じ
+// MyPage edit panel
+// 画面の生成部分：isakile MyPagePanel
+// データの保存部分：isalike SignUpPanel
 
 public class EditMyPagePanel extends JPanel {
     private JLabel idLabel;
@@ -20,11 +20,11 @@ public class EditMyPagePanel extends JPanel {
     private JRadioButton privateRadioButton;
 
     public EditMyPagePanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        // layout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
 
-        // メインのパネル
+        // main
         JPanel contentPanel = new JPanel(new GridLayout(7, 3, 5, 10));
 
         JLabel idTitleLabel = new JLabel("User ID:");
@@ -44,10 +44,10 @@ public class EditMyPagePanel extends JPanel {
         accountTypeGroup.add(publicRadioButton);
         accountTypeGroup.add(privateRadioButton);
 
-        // メインのパネルにラベルとフィールドを追加
+        // add label an field to mina panel 
         contentPanel.add(idTitleLabel);
         contentPanel.add(idLabel);
-        contentPanel.add(new JLabel()); // レイアウト調整のための空のラベル
+        contentPanel.add(new JLabel()); // adding 
         contentPanel.add(nameTitleLabel);
         contentPanel.add(nameLabel);
         contentPanel.add(nameTextField);
@@ -61,18 +61,18 @@ public class EditMyPagePanel extends JPanel {
         contentPanel.add(new JLabel());
         contentPanel.add(privateRadioButton);
 
-        // Backボタンの生成
+        // Back button
         JPanel headerPanel = new JPanel(new BorderLayout());
         JButton backButton = new JButton("Back");
         headerPanel.add(backButton, BorderLayout.WEST);
 
-        // Saveボタンの生成
+        // Save button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton saveButton = new JButton("Save");
         saveButton.setPreferredSize(new Dimension(200, 50));
         buttonPanel.add(saveButton);
 
-        // 全体のレイアウト
+        // layout
         setLayout(new BorderLayout());
         add(headerPanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
@@ -80,7 +80,7 @@ public class EditMyPagePanel extends JPanel {
 
         loadUserData();
 
-        // ボタンアクション
+        // button action
         saveButton.addActionListener(new SaveButtonListener());
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(EditMyPagePanel.this);
@@ -91,10 +91,10 @@ public class EditMyPagePanel extends JPanel {
         });
     }
 
-    // Saveボタンが押されたときの処理
+    // if puushed Save button 
     class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // フィールドの値が入力されていなかったら元のデータを代入
+        
             int id = Integer.valueOf(idLabel.getText());
             String name = nameTextField.getText();
             name = (name == null || name.isEmpty()) ? nameLabel.getText() : name;
@@ -103,13 +103,13 @@ public class EditMyPagePanel extends JPanel {
             String accountType = publicRadioButton.isSelected() ? "Public" : "Private";
             accountType = (accountType == null || accountType.isEmpty()) ? accountTypeLabel.getText() : accountType;
 
-            // バリデーションチェック
+            // validation ckeck
             if (!isValidName(name)) {
                 JOptionPane.showMessageDialog(EditMyPagePanel.this, "Invalid name. Name should contain only alphabets and have a length between 3 and 20 characters.");
                 return;
             }
 
-            // member.csvから一度削除
+            // delete from member.csv once 
             try {
                 File memberFile = new File("member.csv");
                 File tempFile = new File("temp.csv");
@@ -135,7 +135,7 @@ public class EditMyPagePanel extends JPanel {
                 br.close();
                 bw.close();
 
-                memberFile.delete(); // member.csvを更新した内容で置き換える
+                memberFile.delete(); //overwritten by nre date in  member.csv
                 if (!tempFile.renameTo(new File("member.csv"))) {
                     throw new IOException("Failed to rename temp.csv to member.csv");
                 }
@@ -143,13 +143,13 @@ public class EditMyPagePanel extends JPanel {
                 ex.printStackTrace();
             }
 
-            // member.csvに再度保存
+            // save member.csv
             try {
                 FileWriter writer = new FileWriter("member.csv", true);
                 writer.write(toCSV(id, name, email, password, accountType));
                 writer.write("\n");
                 writer.close();
-                // 入力フィールドをクリア
+                // clear field
                 nameTextField.setText("");
                 publicRadioButton.setSelected(false);
                 privateRadioButton.setSelected(false);
@@ -165,18 +165,18 @@ public class EditMyPagePanel extends JPanel {
             }
         }
 
-        // Nameは3-20文字
+        // Name 3-20words
         private boolean isValidName(String name) {
             return name.length() >= 3 && name.length() <= 20;
         }
     }
 
-    // CSVに保存するためのデータ整形
+    // change data iorder to save CSV
     private String toCSV(int id, String name, String email, String password, String accountType) {
         return String.format("%d,%s,%s,%s,%s", id, name, email, password, accountType);
     }
 
-    // member.csvからユーザデータを取得
+    // get user data from member.csv
     public void loadUserData() {
         String memberId = String.valueOf(LoginPanel.user_id);
         String memberFilePath = "member.csv";

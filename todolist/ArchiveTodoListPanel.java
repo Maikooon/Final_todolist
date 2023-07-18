@@ -181,8 +181,7 @@ public class ArchiveTodoListPanel extends JPanel {
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false;
-                    continue; // ヘッダ行を飛ばす
-                }
+                    continue;                 }
                 String[] data = line.split(",");
                 records.add(data);
             }

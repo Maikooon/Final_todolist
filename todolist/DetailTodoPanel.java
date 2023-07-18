@@ -5,8 +5,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-// Todoの詳細画面
-// TodoListPanelで押したTodoを表示
+// Todo detail panel 
+//shows TodoListPanel
 
 public class DetailTodoPanel extends JPanel {
     private JLabel idLabel;
@@ -20,15 +20,15 @@ public class DetailTodoPanel extends JPanel {
     private JLabel createdAtLabel;
     private JLabel updatedAtLabel;
     private Map<String, String> members;
-    private EditTodoPanel editPanel; // 編集画面のデータのセットに用いる
+    private EditTodoPanel editPanel; // use foe detail panel
     private JPanel buttonPanel;
 
     public DetailTodoPanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        //layout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 20, 40));
 
-        // メインのパネル
+        // main
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
         idLabel = new JLabel();
@@ -50,7 +50,7 @@ public class DetailTodoPanel extends JPanel {
         JLabel updatedAtTitleLabel = new JLabel("Updated At:");
         updatedAtLabel = new JLabel();
 
-        // メインのパネルにラベルとフィールドを追加
+        // add button and label to main panel
         contentPanel.add(nameTitleLabel);
         contentPanel.add(nameLabel);
         contentPanel.add(titleTitleLabel);
@@ -68,14 +68,14 @@ public class DetailTodoPanel extends JPanel {
         contentPanel.add(updatedAtTitleLabel);
         contentPanel.add(updatedAtLabel);
 
-        // BackボタンとAddボタンの生成
+        // generate Back Add
         JPanel headerPanel = new JPanel(new BorderLayout());
         JButton backButton = new JButton("Back");
         JButton addButton = new JButton("+");
         headerPanel.add(backButton, BorderLayout.WEST);
         headerPanel.add(addButton, BorderLayout.EAST);
 
-        // Editボタン・Archiveボタン・Deleteボタンの生成
+        // Edit・Archive・Delete
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton editButton = new JButton("Edit");
         JButton archiveButton = new JButton("Archive");
@@ -84,13 +84,13 @@ public class DetailTodoPanel extends JPanel {
         buttonPanel.add(archiveButton);
         buttonPanel.add(deleteButton);
 
-        // 全体のレイアウト
+        // layout
         setLayout(new BorderLayout());
         add(headerPanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // 5つのボタンのアクション設定
+        // action 5 bubttons 
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
             MyWindow myWindow = (MyWindow) frame;
@@ -134,12 +134,11 @@ public class DetailTodoPanel extends JPanel {
             }
         });
 
-        // インスタンス変数membersに値を代入
         members = readMembersFromCSV("member.csv");
     }
 
-    //  詳細画面に遷移する前に値をセットする
-    // TodoListpanelでこのメソッドを呼び出している
+    //  set value before move to new page 
+    // call on TodoListpanel
     public void loadTodoDetails(String todoId) {
         String[] todoDetails = readTodoDetailsFromCSV(todoId);
         if (todoDetails != null) {
@@ -157,7 +156,8 @@ public class DetailTodoPanel extends JPanel {
                 createdAtLabel.setText(todoDetails[7]);
                 updatedAtLabel.setText(todoDetails[8]);
 
-                // 自分のタスクではない場合、Editボタン・Archiveボタン・Deleteボタンを消す
+                // if not my task  
+                //delete Edit,archive ,delete button 
                 if (!isMyTodo(memberId)) {
                     Container container = buttonPanel.getParent();
                     container.remove(buttonPanel);
@@ -172,8 +172,8 @@ public class DetailTodoPanel extends JPanel {
         }
     }
 
-    // データの不整合が起きたときにラベルをN/Aにする
-    private void setDefaultLabels() {
+    // failed label N/A
+        private void setDefaultLabels() {
         idLabel.setText("N/A");
         nameLabel.setText("N/A");
         titleLabel.setText("N/A");
@@ -185,7 +185,7 @@ public class DetailTodoPanel extends JPanel {
         updatedAtLabel.setText("N/A");
     }
 
-    // 引数でmember.csvを受け取ってユーザ情報を読み込む
+    // get data form member.csv
     private Map<String, String> readMembersFromCSV(String fileName) {
         Map<String, String> members = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -202,7 +202,7 @@ public class DetailTodoPanel extends JPanel {
         return members;
     }
 
-    // 引数でtodoIdを受け取ってtodos.csvからTodoの詳細情報を読み込む
+    // get detail date from todoId todos.csv y todoid
     private String[] readTodoDetailsFromCSV(String todoId) {
         String fileName = "todos.csv";
 
@@ -221,20 +221,20 @@ public class DetailTodoPanel extends JPanel {
         return null;
     }
 
-    // 自分のタスクかどうか判別
+    // whether mine or not
     private boolean isMyTodo(String todoId) {
         String loginUserId = String.valueOf(LoginPanel.user_id);
         return loginUserId.equals(userIdLabel.getText());
     }
 
-    // アーカイブの処理
+    // archive
 private void archiveTodo() {
-    String todoId = idLabel.getText(); // IDラベルからtodoIdを取得
+    String todoId = idLabel.getText(); 
 
     try {
         File todosFile = new File("todos.csv");
         File archiveFile = new File("archive.csv");
-        File tempFile = new File("temp.csv"); // 退避ファイル
+        File tempFile = new File("temp.csv"); // trash file
 
         BufferedReader br = new BufferedReader(new FileReader(todosFile));
         BufferedWriter archiveBW = new BufferedWriter(new FileWriter(archiveFile, true));
@@ -244,10 +244,10 @@ private void archiveTodo() {
         while ((line = br.readLine()) != null) {
             String[] data = line.split(",");
             if (data[0].equals(todoId)) {
-                archiveBW.write(line); // アーカイブするタスクをarchive.csvに追加
+                archiveBW.write(line); // archive -  add archive.csv
                 archiveBW.newLine();
             } else {
-                tempBW.write(line); // アーカイブしていないタスクをtemp.csvに書き込む
+                tempBW.write(line); // not archiv --- wite temp.csv
                 tempBW.newLine();
             }
         }
@@ -256,16 +256,16 @@ private void archiveTodo() {
         archiveBW.close();
         tempBW.close();
 
-        todosFile.delete(); // todos.csvを更新した内容で置き換える
+        todosFile.delete(); // trelace todos.csv to new one
         tempFile.renameTo(todosFile);
     } catch (IOException e) {
         e.printStackTrace();
     }
 }
 
-    // 削除の処理
+    // delete 
     private void deleteTodo() {
-        String todoId = idLabel.getText(); // IDラベルからtodoIdを取得
+        String todoId = idLabel.getText(); // get todoid from id label 
 
         try {
             File todosFile = new File("todos.csv");
@@ -292,7 +292,7 @@ private void archiveTodo() {
             br.close();
             bw.close();
 
-            todosFile.delete(); // todos.csvを更新した内容で置き換える
+            todosFile.delete(); // replaeve todos.csv to new one
             if (!tempFile.renameTo(new File("todos.csv"))) {
                 throw new IOException("Failed to rename temp.csv to todos.csv");
             }
@@ -301,14 +301,15 @@ private void archiveTodo() {
         }
     }
 
-    // Archiveボタン・Deleteボタンを押されたときのダイヤログの実装
+    // Archive button 
+    //dailog : Delet butonn is pushd 
     private int showConfirmationDialog(String title, String message) {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 new Object[] { "Yes", "Cancel" }, "Yes");
     }
 
-    // 値のセットのためMyWindowで呼び出す
+    // call on MyWindow to set the data 
     public void setEditlPanel(EditTodoPanel editPanel) {
         this.editPanel = editPanel;
     }

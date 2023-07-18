@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 //for fash
 import java.security.MessageDigest;
 
-// SignUp画面
+// SignUp panel
 
 public class SignUpPanel extends JPanel {
 
@@ -20,16 +20,16 @@ public class SignUpPanel extends JPanel {
     private JRadioButton privateRadioButton;
 
     public SignUpPanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        // lyaout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
 
-        // タイトルラベルの作成
+        // titel label
         JLabel titleLabel = new JLabel("Sign Up");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
 
-        // メインのパネル
+        // main panel
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
         JLabel SpaceLabel = new JLabel("");
         // nameTextField = new JTextField();
@@ -48,7 +48,7 @@ public class SignUpPanel extends JPanel {
         accountTypeGroup.add(publicRadioButton);
         accountTypeGroup.add(privateRadioButton);
 
-        // メインのパネルにラベルとフィールドを追加
+        //add laben to main 
         contentPanel.add(SpaceLabel);
         contentPanel.add(new JLabel());
         contentPanel.add(nameLabel);
@@ -61,29 +61,29 @@ public class SignUpPanel extends JPanel {
         contentPanel.add(passwordConfirmField);
         contentPanel.add(accountTypeLabel);
         contentPanel.add(publicRadioButton);
-        contentPanel.add(new JLabel()); // レイアウトを調整するための空のラベル
+        contentPanel.add(new JLabel()); // padding 
         contentPanel.add(privateRadioButton);
 
-        // Backボタンとタイトルを含むパネル
-        JButton backButton; // Backボタンの定義
+        // Back button and title 
+        JButton backButton; // Back button
         backButton = new JButton("Back");
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(backButton, BorderLayout.WEST);
         titlePanel.add(titleLabel, BorderLayout.CENTER);
 
-        // Sign Upボタンの生成
+        // Sign Upbutton
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.setPreferredSize(new Dimension(200, 50));
         buttonPanel.add(signUpButton);
 
-        // 全体のレイアウト
+        // overall layout
         // setLayout(new BorderLayout());
         add(titlePanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // ボタンアクション
+        // button action
         signUpButton.addActionListener(new signUpButtonListener());
         backButton.addActionListener(e -> {
             Frame frame = (Frame) getParent();
@@ -92,17 +92,17 @@ public class SignUpPanel extends JPanel {
         });
     }
 
-    // Sign Upボタンが押されたときの処理（フィールドの値を取得してバリデーションチェック）
+    // Sign Up button action  (validation check)
     class signUpButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // 入力された情報を取得
+            // get user info
             String name = nameTextField.getText();
             String email = emailTextField.getText();
             String password = new String(passwordField.getPassword());
             String passwordConfirm = new String(passwordConfirmField.getPassword());
             String accountType = publicRadioButton.isSelected() ? "Public" : "Private";
 
-            // バリデーションチェック
+            // vaild check
             if (!isValidName(name)) {
                 JOptionPane.showMessageDialog(SignUpPanel.this,
                         "Invalid name. Name should be between 3 and 30 characters.");
@@ -126,7 +126,7 @@ public class SignUpPanel extends JPanel {
                 return;
             }
 
-            if (!password.equals(passwordConfirm)) { // PasswordとConfirm Passwordが一致するか確認
+            if (!password.equals(passwordConfirm)) { // Password - Confirm Password
                 JOptionPane.showMessageDialog(SignUpPanel.this, "Passwords do not match.");
                 return;
             }
@@ -136,10 +136,10 @@ public class SignUpPanel extends JPanel {
                 return;
             }
 
-            // IDの付与
+            // define ID
             int id = assignId();
 
-            // ユーザ情報の保存
+            // save user info 
             String userData = String.format("%d,%s,%s,%s,%s", id, name, email, password, accountType);
             saveUserData(userData);
             clearFields();
@@ -150,17 +150,17 @@ public class SignUpPanel extends JPanel {
         }
     }
 
-    // Nameは3-20文字
+    // Name:3-20文字words
     private boolean isValidName(String name) {
         return name.length() >= 3 && name.length() <= 20;
     }
 
-    // Emailは正式な形で
+    // Email vaild 
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$", email);
     }
 
-    // Emailは他のユーザと被らない
+    // Email is unique
     private boolean isUniqueEmail(String email) {
         try {
             BufferedReader br = new BufferedReader(new FileReader("member.csv"));
@@ -169,14 +169,14 @@ public class SignUpPanel extends JPanel {
                 String[] data = line.split(",");
                 if (data.length >= 3 && data[2].equals(email)) {
                     br.close();
-                    return false; // 同じEmailが既に存在する場合はfalseを返す
+                    return false; // emial is unique 
                 }
             }
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return true; // ユニークなEmailの場合はtrueを返す
+        return true; // unique - ture
     }
 
     // hash-function for passoword
@@ -199,29 +199,29 @@ public class SignUpPanel extends JPanel {
         }
     }
 
-    // パスワードは8-20文字で英数字を混ぜる,のちにHash関数で検証
+    // passowrods 8-20 words : eng and fig 
     private boolean isValidPassword(String password) {
         String hashedPassword = hashPassword(password);
        // System.out.println(hashedPassword);
         return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", hashedPassword);
     }
 
-    // アカウントタイプは選択必須
+    // accoutn type 
     private boolean isAccountTypeSelected() {
         return publicRadioButton.isSelected() || privateRadioButton.isSelected();
     }
 
-    // 現在のユーザの中で最もidの値が大きいユーザのidに1を足したidを新規ユーザに付与する（1から昇順にidを付与する）
+    // define id ::  prev +1 = nextid
     private int assignId() {
         int maxId = 0;
         try {
             BufferedReader br = new BufferedReader(new FileReader("member.csv"));
             String line;
-            boolean isFirstLine = true; // ヘッダ行をスキップするためのフラグ
+            boolean isFirstLine = true; // skip header
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false;
-                    continue; // ヘッダ行をスキップ
+                    continue; 
                 }
                 String[] data = line.split(",");
                 if (data.length >= 1) {
@@ -238,7 +238,7 @@ public class SignUpPanel extends JPanel {
         return maxId + 1;
     }
 
-    // CSVファイルにユーザデータを保存
+    // save user data to CSV files 
     private void saveUserData(String userData) {
         try {
             FileWriter writer = new FileWriter("member.csv", true);
@@ -250,7 +250,7 @@ public class SignUpPanel extends JPanel {
         }
     }
 
-    // フィールドの値を空にする
+    // clear field
     private void clearFields() {
         nameTextField.setText("");
         emailTextField.setText("");

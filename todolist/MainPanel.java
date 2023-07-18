@@ -4,12 +4,12 @@ import java.awt.*;
 class MainPanel extends JPanel {
     MainPanel() {
         setLayout(new BorderLayout());
-        //toDoList、MytoDoList、My Profileへ遷移できる画面
+        // move to toDoList、MytoDoList、My Profile
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
         add(centerPanel, BorderLayout.CENTER);
 
-        //"HOME"というラベルの追加
+        //add "HOME"  label
         JLabel titleLabel = new JLabel("HOME");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         GridBagConstraints titleConstraints = new GridBagConstraints();

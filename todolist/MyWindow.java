@@ -4,8 +4,11 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-// 画面を制御する
-// 起動時に生成 or ログイン時に生成 or 遷移するたびに生成
+// panel control
+// panel
+//1. app is up
+//2. login
+//3. move panel to panel 
 
 public class MyWindow extends Frame {
     private TodoListPanel todoListPanel;
@@ -23,7 +26,7 @@ public class MyWindow extends Frame {
     }
 
     MyWindow() {
-        // レイアウト
+        // layout
         setTitle("Todo List");
         setSize(1000, 750);
         setLocationRelativeTo(null);
@@ -31,14 +34,13 @@ public class MyWindow extends Frame {
         setLayout(cardLayout);
 
         // icon
-        // 同じフォルダに画像を格納
         URL imageIconUrl = getClass().getClassLoader().getResource("iconimage.png");
         if (imageIconUrl != null) {
             ImageIcon icon = new ImageIcon(imageIconUrl);
             setIconImage(icon.getImage());
         }
 
-        // 起動時に生成して大丈夫なパネル
+        // generate panel when wakeup app
         add(new InitialPanel(), "InitialPanel");
         add(new SignUpPanel(), "SignUpPanel");
         add(new LoginPanel(), "LoginPanel");
@@ -48,7 +50,7 @@ public class MyWindow extends Frame {
         addWindowListener(new WinListener());
     }
 
-    // ログイン成功時にパネルを追加する
+    // add panel when login is successfur
     public void addPanelsAfterLogin() {
         myPagePanel = new MyPagePanel();
         editMyPagePanel = new EditMyPagePanel();
@@ -56,10 +58,10 @@ public class MyWindow extends Frame {
         add(editMyPagePanel, "EditMyPagePanel");
     }
 
-    // 開くたびにパネルを追加する
+    // add panel - every time you open 
     public void reloadPanels() {
-        // 値の受け渡しをする画面同士の制御
-        // 一覧⇄詳細と詳細⇄編集はここに追加
+        //translate many atai 
+        // lst --detail & detail -edit 
         todoListPanel = new TodoListPanel();
         // myTodoListPanel = new MyTodoListPanel();
         archiveTodoListPanel = new ArchiveTodoListPanel();
@@ -85,7 +87,7 @@ public class MyWindow extends Frame {
         add(editTodoPanel, "EditTodoPanel");
     }
 
-    // 画面を閉じたらプログラム終了
+    // exit func
     class WinListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             System.exit(0);
