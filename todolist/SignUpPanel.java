@@ -126,10 +126,12 @@ public class SignUpPanel extends JPanel {
                 return;
             }
 
+            
             if (!password.equals(passwordConfirm)) { // Password - Confirm Password
                 JOptionPane.showMessageDialog(SignUpPanel.this, "Passwords do not match.");
                 return;
             }
+            password = hashPassword(password);
 
             if (!isAccountTypeSelected()) {
                 JOptionPane.showMessageDialog(SignUpPanel.this, "Please select an account type.");
@@ -201,10 +203,9 @@ public class SignUpPanel extends JPanel {
 
     // passowrods 8-20 words : eng and fig 
     private boolean isValidPassword(String password) {
-        String hashedPassword = hashPassword(password);
-       // System.out.println(hashedPassword);
-        return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", hashedPassword);
+        return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", password);
     }
+    
 
     // accoutn type 
     private boolean isAccountTypeSelected() {
@@ -238,8 +239,10 @@ public class SignUpPanel extends JPanel {
         return maxId + 1;
     }
 
+
     // save user data to CSV files 
     private void saveUserData(String userData) {
+        
         try {
             FileWriter writer = new FileWriter("member.csv", true);
             writer.write(userData + "\n");
