@@ -21,7 +21,9 @@ public class TodoListPanel extends JPanel {
     private List<String[]> members;
     private DetailTodoPanel detailPanel; // 詳細情報を表示するパネル
     private List<MemberCheckBox> memberCheckBoxes = new ArrayList<>();
-    private List<String[]> todosSelected = new ArrayList<>();
+    private List<TagCheckBox> tagCheckBoxes = new ArrayList<>();
+    private List<String[]> todosMemberSelected = new ArrayList<>();
+    private List<String[]> todosTagSelected = new ArrayList<>();
     private JPanel ToDoPanel = new JPanel();
     private JPanel LeftSelectPanel = new JPanel();
 
@@ -36,6 +38,19 @@ public class TodoListPanel extends JPanel {
     
         public String getMemberId() {
             return memberId;
+        }
+    }
+    //チェックボックス式のクラスtagを定義
+    class TagCheckBox extends JCheckBox {
+        private String tag;
+    
+        public TagCheckBox(String tag) {
+            super(tag);
+            this.tag = tag;
+        }
+    
+        public String getTag() {
+            return tag;
         }
     }
 
@@ -65,17 +80,55 @@ public class TodoListPanel extends JPanel {
                 MemberCheckBox memberCheckBox = new MemberCheckBox(member[0], member[1]);
                 memberCheckBox.setSelected(true);
                 LeftSelectPanel.add(memberCheckBox);
-                memberCheckBoxes.add(memberCheckBox); // Add checkbox to list
+                memberCheckBoxes.add(memberCheckBox); 
             }
             else if (member[4].equals("Public")) {
                 MemberCheckBox memberCheckBox = new MemberCheckBox(member[0],member[1]);
                 memberCheckBox.setSelected(true);
                 LeftSelectPanel.add(memberCheckBox);
-                memberCheckBoxes.add(memberCheckBox); // Add checkbox to list
+                memberCheckBoxes.add(memberCheckBox); 
             }else{
                 continue;
             }
         }
+
+        //tagのボタン生成
+        LeftSelectPanel.add(new JLabel(" "));
+        JLabel tagTitle = new JLabel("TAG");
+        LeftSelectPanel.add(tagTitle);
+        TagCheckBox PersonalCheckBox = new TagCheckBox("Personal");
+        PersonalCheckBox.setSelected(true);
+        LeftSelectPanel.add(PersonalCheckBox);
+        tagCheckBoxes.add(PersonalCheckBox);
+        TagCheckBox WorkCheckBox = new TagCheckBox("Work");
+        WorkCheckBox.setSelected(true);
+        LeftSelectPanel.add(WorkCheckBox);
+        tagCheckBoxes.add(WorkCheckBox);
+        TagCheckBox EducationCheckBox = new TagCheckBox("Education");
+        EducationCheckBox.setSelected(true);
+        LeftSelectPanel.add(EducationCheckBox);
+        tagCheckBoxes.add(EducationCheckBox);
+        TagCheckBox HealthCheckBox = new TagCheckBox("Health");
+        HealthCheckBox.setSelected(true);
+        LeftSelectPanel.add(HealthCheckBox);
+        tagCheckBoxes.add(HealthCheckBox);
+        TagCheckBox FinanceCheckBox = new TagCheckBox("Finance");
+        FinanceCheckBox.setSelected(true);
+        LeftSelectPanel.add(FinanceCheckBox);
+        tagCheckBoxes.add(FinanceCheckBox);
+        TagCheckBox HomeCheckBox = new TagCheckBox("Home");
+        HomeCheckBox.setSelected(true);
+        LeftSelectPanel.add(HomeCheckBox);
+        tagCheckBoxes.add(HomeCheckBox);
+        TagCheckBox SocialCheckBox = new TagCheckBox("Social");
+        SocialCheckBox.setSelected(true);
+        LeftSelectPanel.add(SocialCheckBox);
+        tagCheckBoxes.add(SocialCheckBox);
+        TagCheckBox OtherCheckBox = new TagCheckBox("Other");
+        OtherCheckBox.setSelected(true);
+        LeftSelectPanel.add(OtherCheckBox);
+        tagCheckBoxes.add(OtherCheckBox);
+
 
         //ソートについてボタンを生成
         LeftSelectPanel.add(new JLabel(" "));
@@ -93,14 +146,16 @@ public class TodoListPanel extends JPanel {
         JButton SelectOKButton = new JButton("OK");
         SelectOKButton.setPreferredSize(new Dimension(300, 200));
         LeftSelectPanel.add(SelectOKButton);
-        filterTodos();
+        filterMemberTodos();
+        filterTagTodos();
         displayTodos();
 
 
         // OKボタンが押されたとき各todoについて1つずつボタンを生成
         SelectOKButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                filterTodos();
+                filterMemberTodos();
+                filterTagTodos();
                 if (DeadLineCheckBox.isSelected() && PriorityCheckBox.isSelected()){
                     sortTodosBoth();
                 }else if (DeadLineCheckBox.isSelected()){
@@ -210,6 +265,7 @@ public class TodoListPanel extends JPanel {
         return "Unknown";
     }
 
+
     // 自分かPublicの人のタスクかどうか
     private boolean isOpen(String memberId) {
         String user_id = String.valueOf(LoginPanel.user_id);
@@ -228,21 +284,37 @@ public class TodoListPanel extends JPanel {
         return false;
     }
 
-    //チェックボックスにチェックの入っている人のToDoのみtodosSelectedとする(絞り込み)
-    // Filter todos based on selected members
-    private void filterTodos() {
-        todosSelected.clear();
+    //チェックボックスにチェックの入っている人のToDoのみtodosMemberSelectedとする(絞り込み)
+    //Memberで絞り込み
+    private void filterMemberTodos() {
+        todosMemberSelected.clear();
         for (MemberCheckBox memberCheckBox : memberCheckBoxes) {
             if (memberCheckBox.isSelected()) {
                 String memberId = memberCheckBox.getMemberId();
                 for (String[] todo : todos) {
                     if (todo[1].equals(memberId)) {
-                        todosSelected.add(todo);
+                        todosMemberSelected.add(todo);
                     }
                 }
             }
         }
     }
+
+    //Tagで絞り込み
+    private void filterTagTodos() {
+        todosTagSelected.clear();
+        for (TagCheckBox tagCheckBox : tagCheckBoxes) {
+            if (tagCheckBox.isSelected()){
+                for (String[] todo: todosMemberSelected){
+                    if (todo[4].equals(tagCheckBox.tag)){
+                        todosTagSelected.add(todo);
+                    }
+                }
+            }
+        } 
+    }  
+
+
 
     //Priorityを数値にマッピングする
     private int priorityToInt(String priority) {
@@ -258,12 +330,12 @@ public class TodoListPanel extends JPanel {
 
     //sort関数の実装
     public void sortTodosBoth() {//Priority、DeadLineどちらにもチェック入っている
-        Collections.sort(todosSelected, new Comparator<String[]>() {
+        Collections.sort(todosTagSelected, new Comparator<String[]>() {
             @Override
             public int compare(String[] todo1, String[] todo2) {
-                int priorityComparison = Integer.compare(priorityToInt(todo2[6]), priorityToInt(todo1[6])); // compare priority
-                if (priorityComparison == 0) { // if priorities are the same, compare deadline
-                    return todo1[5].compareTo(todo2[5]); // compare deadline
+                int priorityComparison = Integer.compare(priorityToInt(todo2[6]), priorityToInt(todo1[6])); 
+                if (priorityComparison == 0) { 
+                    return todo1[5].compareTo(todo2[5]); 
                 } else {
                     return priorityComparison;
                 }
@@ -272,27 +344,27 @@ public class TodoListPanel extends JPanel {
     }
 
     public void sortTodosDeadLine() {//DeadLineのみチェック入っている
-        Collections.sort(todosSelected, new Comparator<String[]>() {
+        Collections.sort(todosTagSelected, new Comparator<String[]>() {
             @Override
             public int compare(String[] todo1, String[] todo2) {
-                return todo1[5].compareTo(todo2[5]); // compare deadline
+                return todo1[5].compareTo(todo2[5]); 
             }
         });
     }   
 
     public void sortTodosPriority() {//Priorityのみチェック入っている
-        Collections.sort(todosSelected, new Comparator<String[]>() {
+        Collections.sort(todosTagSelected, new Comparator<String[]>() {
             @Override
             public int compare(String[] todo1, String[] todo2) {
-                return Integer.compare(priorityToInt(todo2[6]), priorityToInt(todo1[6])); // compare priority
+                return Integer.compare(priorityToInt(todo2[6]), priorityToInt(todo1[6]));
         }
         });
     }
 
-    //todoSelected(絞り込み、ソート済み)を表示する
+    //todoTagSelected(絞り込み、ソート済み)を表示する
     private void displayTodos() {
-    ToDoPanel.removeAll();  // Important to remove old buttons
-    for (String[] todo : todosSelected) {
+    ToDoPanel.removeAll(); 
+    for (String[] todo : todosTagSelected) {
         String todoId = todo[0];
         String memberId = todo[1];
         String memberName = findMemberName(memberId);
@@ -304,7 +376,7 @@ public class TodoListPanel extends JPanel {
         if (!isOpen(memberId)) {
             continue;
         }
-        String buttonLabel = String.format("%-15s: %-20s (%-10s) %-15s - %s", memberName, title, tag, deadline, priority);
+        String buttonLabel = String.format("%-15s : %-18s |    #%-8s    |    *%-10s    |    %s", memberName, title, tag, deadline, priority);
         JButton todoButton = new JButton(buttonLabel);
         todoButton.setPreferredSize(new Dimension(500, 50));
         todoButton.addActionListener(new ActionListener() {
