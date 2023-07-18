@@ -20,7 +20,7 @@ public class SignUpPanel extends JPanel {
     private JRadioButton privateRadioButton;
 
     public SignUpPanel() {
-        // lyaout 
+        // lyaout
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
 
@@ -48,7 +48,7 @@ public class SignUpPanel extends JPanel {
         accountTypeGroup.add(publicRadioButton);
         accountTypeGroup.add(privateRadioButton);
 
-        //add laben to main 
+        // add laben to main
         contentPanel.add(SpaceLabel);
         contentPanel.add(new JLabel());
         contentPanel.add(nameLabel);
@@ -61,10 +61,10 @@ public class SignUpPanel extends JPanel {
         contentPanel.add(passwordConfirmField);
         contentPanel.add(accountTypeLabel);
         contentPanel.add(publicRadioButton);
-        contentPanel.add(new JLabel()); // padding 
+        contentPanel.add(new JLabel()); // padding
         contentPanel.add(privateRadioButton);
 
-        // Back button and title 
+        // Back button and title
         JButton backButton; // Back button
         backButton = new JButton("Back");
         JPanel titlePanel = new JPanel(new BorderLayout());
@@ -92,7 +92,7 @@ public class SignUpPanel extends JPanel {
         });
     }
 
-    // Sign Up button action  (validation check)
+    // Sign Up button action (validation check)
     class signUpButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // get user info
@@ -126,6 +126,9 @@ public class SignUpPanel extends JPanel {
                 return;
             }
 
+            // change password to hash password
+            password = hashPassword(password);
+
             if (!password.equals(passwordConfirm)) { // Password - Confirm Password
                 JOptionPane.showMessageDialog(SignUpPanel.this, "Passwords do not match.");
                 return;
@@ -138,8 +141,7 @@ public class SignUpPanel extends JPanel {
 
             // define ID
             int id = assignId();
-
-            // save user info 
+            // save user infomation to csv file
             String userData = String.format("%d,%s,%s,%s,%s", id, name, email, password, accountType);
             saveUserData(userData);
             clearFields();
@@ -155,7 +157,7 @@ public class SignUpPanel extends JPanel {
         return name.length() >= 3 && name.length() <= 20;
     }
 
-    // Email vaild 
+    // Email vaild
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$", email);
     }
@@ -169,7 +171,7 @@ public class SignUpPanel extends JPanel {
                 String[] data = line.split(",");
                 if (data.length >= 3 && data[2].equals(email)) {
                     br.close();
-                    return false; // emial is unique 
+                    return false; // emial is unique
                 }
             }
             br.close();
@@ -199,19 +201,17 @@ public class SignUpPanel extends JPanel {
         }
     }
 
-    // passowrods 8-20 words : eng and fig 
+    // passowrods 8-20 words : eng and fig
     private boolean isValidPassword(String password) {
-        String hashedPassword = hashPassword(password);
-       // System.out.println(hashedPassword);
-        return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", hashedPassword);
+        return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", password);
     }
 
-    // accoutn type 
+    // accoutn type
     private boolean isAccountTypeSelected() {
         return publicRadioButton.isSelected() || privateRadioButton.isSelected();
     }
 
-    // define id ::  prev +1 = nextid
+    // define id :: prev +1 = nextid
     private int assignId() {
         int maxId = 0;
         try {
@@ -221,7 +221,7 @@ public class SignUpPanel extends JPanel {
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false;
-                    continue; 
+                    continue;
                 }
                 String[] data = line.split(",");
                 if (data.length >= 1) {
@@ -238,7 +238,7 @@ public class SignUpPanel extends JPanel {
         return maxId + 1;
     }
 
-    // save user data to CSV files 
+    // save user data to CSV files
     private void saveUserData(String userData) {
         try {
             FileWriter writer = new FileWriter("member.csv", true);
