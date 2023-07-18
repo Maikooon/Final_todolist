@@ -40,6 +40,9 @@ public class EditMyPagePanel extends JPanel {
         JLabel accountTypeLabel = new JLabel("Account Type:");
         publicRadioButton = new JRadioButton("Public");
         privateRadioButton = new JRadioButton("Private");
+        ButtonGroup accountTypeGroup = new ButtonGroup();
+        accountTypeGroup.add(publicRadioButton);
+        accountTypeGroup.add(privateRadioButton);
 
         // メインのパネルにラベルとフィールドを追加
         contentPanel.add(idTitleLabel);
@@ -84,7 +87,7 @@ public class EditMyPagePanel extends JPanel {
             MyWindow myWindow = (MyWindow) frame;
             myWindow.addPanelsAfterLogin();
             CardLayout cardLayout = (CardLayout) frame.getLayout();
-            cardLayout.show(frame, "MyPagePanel");
+            cardLayout.show(frame, "MainPanel");
         });
     }
 

@@ -12,11 +12,11 @@ class InitialPanel extends JPanel {
 
         // タイトル
         JLabel titleLabel = new JLabel("Welcome ToDo List!!!");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         GridBagConstraints titleConstraints = new GridBagConstraints();
         titleConstraints.gridx = 0;
         titleConstraints.gridy = 0;
-        titleConstraints.insets = new Insets(0, 0, 20, 0);
+        titleConstraints.insets = new Insets(0, 0, 30, 0);
         centerPanel.add(titleLabel, titleConstraints);
 
         // ボタンのパネル

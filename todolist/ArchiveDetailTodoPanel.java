@@ -80,7 +80,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
         buttonPanel.add(unarchiveButton);
 
         // 全体のレイアウト
-        setLayout(new BorderLayout());
+        //setLayout(new BorderLayout());
         add(headerPanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -187,47 +187,51 @@ public class ArchiveDetailTodoPanel extends JPanel {
 
         return null;
     }
-
     // アーカイブの処理
     private void archiveTodo() {
         String todoId = idLabel.getText(); // IDラベルからtodoIdを取得
-
+        String selectedTodo = null;
         try {
             File todosFile = new File("todos.csv");
             File archiveFile = new File("archive.csv");
-            BufferedReader br = new BufferedReader(new FileReader(archiveFile));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(todosFile, true));
 
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data[0].equals(todoId)) {
-                    bw.write(line); // アーカイブするタスクをarchive.csvに追加
+            try (BufferedReader br = new BufferedReader(new FileReader(archiveFile))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] data = line.split(",");
+                    if (data[0].equals(todoId)) {
+                        selectedTodo = line;
+                        break;
+                    }
+                }
+            }
+
+            if (selectedTodo != null) {
+                File tempFile = new File("temp.csv"); // 退避ファイル
+                try (BufferedReader br = new BufferedReader(new FileReader(archiveFile));
+                     BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
+
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        if (!line.equals(selectedTodo)) {
+                            bw.write(line);
+                            bw.newLine();
+                        }
+                    }
+                }
+                archiveFile.delete(); // archive.csvを更新した内容で置き換える
+                tempFile.renameTo(archiveFile);
+
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(todosFile, true))) {
+                    bw.write(selectedTodo);
                     bw.newLine();
                 }
             }
-            br.close();
-            bw.close();
 
-            File tempFile = new File("temp.csv"); // 退避ファイル
-            br = new BufferedReader(new FileReader(archiveFile));
-            bw = new BufferedWriter(new FileWriter(tempFile));
-
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (!data[0].equals(todoId)) {
-                    bw.write(line); // アーカイブしていないタスクをtemp.csvに書き込む
-                    bw.newLine();
-                }
-            }
-            br.close();
-            bw.close();
-
-            archiveFile.delete(); // archive.csvを更新した内容で置き換える
-            tempFile.renameTo(archiveFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     // UnArchiveボタンを押されたときのダイヤログの実装

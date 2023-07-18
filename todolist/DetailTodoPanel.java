@@ -228,46 +228,40 @@ public class DetailTodoPanel extends JPanel {
     }
 
     // アーカイブの処理
-    private void archiveTodo() {
-        String todoId = idLabel.getText(); // IDラベルからtodoIdを取得
+private void archiveTodo() {
+    String todoId = idLabel.getText(); // IDラベルからtodoIdを取得
 
-        try {
-            File todosFile = new File("todos.csv");
-            File archiveFile = new File("archive.csv");
-            BufferedReader br = new BufferedReader(new FileReader(todosFile));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(archiveFile, true));
+    try {
+        File todosFile = new File("todos.csv");
+        File archiveFile = new File("archive.csv");
+        File tempFile = new File("temp.csv"); // 退避ファイル
 
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data[0].equals(todoId)) {
-                    bw.write(line); // アーカイブするタスクをarchive.csvに追加
-                    bw.newLine();
-                }
+        BufferedReader br = new BufferedReader(new FileReader(todosFile));
+        BufferedWriter archiveBW = new BufferedWriter(new FileWriter(archiveFile, true));
+        BufferedWriter tempBW = new BufferedWriter(new FileWriter(tempFile));
+
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] data = line.split(",");
+            if (data[0].equals(todoId)) {
+                archiveBW.write(line); // アーカイブするタスクをarchive.csvに追加
+                archiveBW.newLine();
+            } else {
+                tempBW.write(line); // アーカイブしていないタスクをtemp.csvに書き込む
+                tempBW.newLine();
             }
-            br.close();
-            bw.close();
-
-            File tempFile = new File("temp.csv"); // 退避ファイル
-            br = new BufferedReader(new FileReader(todosFile));
-            bw = new BufferedWriter(new FileWriter(tempFile));
-
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (!data[0].equals(todoId)) {
-                    bw.write(line); // アーカイブしていないタスクをtemp.csvに書き込む
-                    bw.newLine();
-                }
-            }
-            br.close();
-            bw.close();
-
-            todosFile.delete(); // todos.csvを更新した内容で置き換える
-            tempFile.renameTo(todosFile);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        br.close();
+        archiveBW.close();
+        tempBW.close();
+
+        todosFile.delete(); // todos.csvを更新した内容で置き換える
+        tempFile.renameTo(todosFile);
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 
     // 削除の処理
     private void deleteTodo() {

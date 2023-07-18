@@ -9,21 +9,30 @@ import java.util.regex.Pattern;
 // SignUp画面
 
 public class SignUpPanel extends JPanel {
+
+
     private JTextField nameTextField;
     private JTextField emailTextField;
     private JPasswordField passwordField;
     private JPasswordField passwordConfirmField;
     private JRadioButton publicRadioButton;
     private JRadioButton privateRadioButton;
+    
 
     public SignUpPanel() {
         // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
 
+        // タイトルラベルの作成
+        JLabel titleLabel = new JLabel("Sign Up");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD,30));
+
         // メインのパネル
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
-
+        JLabel SpaceLabel = new JLabel("");
+        //nameTextField = new JTextField();
         JLabel nameLabel = new JLabel("Display Name:");
         nameTextField = new JTextField();
         JLabel emailLabel = new JLabel("Email:");
@@ -35,8 +44,13 @@ public class SignUpPanel extends JPanel {
         JLabel accountTypeLabel = new JLabel("Account Type:");
         publicRadioButton = new JRadioButton("Public");
         privateRadioButton = new JRadioButton("Private");
+        ButtonGroup accountTypeGroup = new ButtonGroup();
+        accountTypeGroup.add(publicRadioButton);
+        accountTypeGroup.add(privateRadioButton);
 
         // メインのパネルにラベルとフィールドを追加
+        contentPanel.add(SpaceLabel);
+        contentPanel.add(new JLabel());
         contentPanel.add(nameLabel);
         contentPanel.add(nameTextField);
         contentPanel.add(emailLabel);
@@ -50,10 +64,12 @@ public class SignUpPanel extends JPanel {
         contentPanel.add(new JLabel()); // レイアウトを調整するための空のラベル
         contentPanel.add(privateRadioButton);
 
-        // Backボタンの生成
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        JButton backButton = new JButton("Back");
-        headerPanel.add(backButton, BorderLayout.WEST);
+        // Backボタンとタイトルを含むパネル
+        JButton backButton;  // Backボタンの定義
+        backButton = new JButton("Back");
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.add(backButton, BorderLayout.WEST);
+        titlePanel.add(titleLabel, BorderLayout.CENTER);
 
         // Sign Upボタンの生成
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -62,8 +78,8 @@ public class SignUpPanel extends JPanel {
         buttonPanel.add(signUpButton);
 
         // 全体のレイアウト
-        setLayout(new BorderLayout());
-        add(headerPanel, BorderLayout.NORTH);
+        //setLayout(new BorderLayout());
+        add(titlePanel,BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 

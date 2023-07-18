@@ -8,6 +8,7 @@ import java.io.IOException;
 // マイページ画面
 
 public class MyPagePanel extends JPanel {
+    private JLabel spaceLabel;
     private JLabel idLabel;
     private JLabel nameLabel;
     private JLabel emailLabel;
@@ -16,11 +17,19 @@ public class MyPagePanel extends JPanel {
     public MyPagePanel() {
         // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(20, 40, 20, 40));
+        setBorder(new EmptyBorder(40, 60, 50, 70));
+
+        // タイトルラベルの作成
+        JLabel titleLabel = new JLabel("My Profile");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD,30));
+
 
          // メインのパネル
-        JPanel contentPanel = new JPanel(new GridLayout(7, 2, 5, 10));
 
+        JPanel contentPanel = new JPanel(new GridLayout(7, 2, 5, 10));
+        JLabel SpaceLabel = new JLabel("");
+        spaceLabel=new JLabel();
         JLabel idTitleLabel = new JLabel("User ID:");
         idLabel = new JLabel();
         JLabel nameTitleLabel = new JLabel("Name:");
@@ -31,6 +40,10 @@ public class MyPagePanel extends JPanel {
         accountTypeLabel = new JLabel();
 
         // メインのパネルにラベルとフィールドを追加
+        contentPanel.add(SpaceLabel);
+        contentPanel.add(spaceLabel);
+        contentPanel.add(SpaceLabel);
+        contentPanel.add(spaceLabel);
         contentPanel.add(idTitleLabel);
         contentPanel.add(idLabel);
         contentPanel.add(nameTitleLabel);
@@ -42,10 +55,13 @@ public class MyPagePanel extends JPanel {
 
         loadUserData();
 
-        // Backボタンの生成
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        JButton backButton = new JButton("Back");
-        headerPanel.add(backButton, BorderLayout.WEST);
+        // Backボタンとタイトルを含むパネル
+        JButton backButton;  // Backボタンの定義
+        backButton = new JButton("Back");
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.add(backButton, BorderLayout.WEST);
+        titlePanel.add(titleLabel, BorderLayout.CENTER);
+
 
         // Editボタン・Logoutボタンの生成
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -56,7 +72,7 @@ public class MyPagePanel extends JPanel {
 
         // 全体のレイアウト
         setLayout(new BorderLayout());
-        add(headerPanel, BorderLayout.NORTH);
+        add(titlePanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 

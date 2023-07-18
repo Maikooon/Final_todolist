@@ -51,19 +51,24 @@ public class MyWindow extends Frame {
         // 値の受け渡しをする画面同士の制御
         // 一覧⇄詳細と詳細⇄編集はここに追加
         todoListPanel = new TodoListPanel();
-        myTodoListPanel = new MyTodoListPanel();
+        //myTodoListPanel = new MyTodoListPanel();
         archiveTodoListPanel = new ArchiveTodoListPanel();
         detailTodoPanel = new DetailTodoPanel();
         archiveDetailTodoPanel = new ArchiveDetailTodoPanel();
         editTodoPanel = new EditTodoPanel();
+        myTodoListPanel = new MyTodoListPanel();
 
         todoListPanel.setDetailPanel(detailTodoPanel);
         myTodoListPanel.setDetailPanel(detailTodoPanel);
         archiveTodoListPanel.setDetailPanel(archiveDetailTodoPanel);
         detailTodoPanel.setEditlPanel(editTodoPanel);
+        todoListPanel.setDetailPanel(detailTodoPanel);
+        myTodoListPanel.setDetailPanel(detailTodoPanel);
 
+        //add(todoListPanel, "TodoListPanel");
+        //add(myTodoListPanel, "MyTodoListPanel");
         add(todoListPanel, "TodoListPanel");
-        add(myTodoListPanel, "MyTodoListPanel");
+        add(myTodoListPanel,"MyTodoListPanel");
         add(archiveTodoListPanel, "ArchiveTodoListPanel");
         add(detailTodoPanel, "DetailTodoPanel");
         add(archiveDetailTodoPanel, "ArchiveDetailTodoPanel");

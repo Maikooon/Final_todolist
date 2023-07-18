@@ -17,7 +17,12 @@ class LoginPanel extends JPanel {
     public LoginPanel() {
         // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(20, 40, 40, 40));
+        setBorder(new EmptyBorder(40, 50, 40, 60));
+
+        // タイトルラベルの作成
+        JLabel titleLabel = new JLabel("Log In");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD,30));
 
         // メインのパネル
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); 
@@ -35,10 +40,12 @@ class LoginPanel extends JPanel {
         contentPanel.add(passwordLabel);
         contentPanel.add(passwordField);
 
-        // Backボタンの生成
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        JButton backButton = new JButton("Back");
-        headerPanel.add(backButton, BorderLayout.WEST);
+        // Backボタンとタイトルを含むパネル
+        JButton backButton;  // Backボタンの定義
+        backButton = new JButton("Back");
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.add(backButton, BorderLayout.WEST);
+        titlePanel.add(titleLabel, BorderLayout.CENTER);
 
         // Loginボタンの生成
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -47,7 +54,7 @@ class LoginPanel extends JPanel {
         buttonPanel.add(loginButton);
 
         // 全体のレイアウト
-        add(headerPanel, BorderLayout.NORTH);
+        add(titlePanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 

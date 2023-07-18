@@ -4,14 +4,25 @@ import java.awt.*;
 class MainPanel extends JPanel {
     MainPanel() {
         setLayout(new BorderLayout());
+        //toDoList、MytoDoList、My Profileへ遷移できる画面
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
         add(centerPanel, BorderLayout.CENTER);
 
+        //"HOME"というラベルの追加
+        JLabel titleLabel = new JLabel("HOME");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        GridBagConstraints titleConstraints = new GridBagConstraints();
+        titleConstraints.gridx = 0;
+        titleConstraints.gridy = 0;
+        titleConstraints.insets = new Insets(0, 0, 30, 0);
+        centerPanel.add(titleLabel, titleConstraints);
+
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         GridBagConstraints buttonConstraints = new GridBagConstraints();
         buttonConstraints.gridx = 0;
-        buttonConstraints.gridy = 1;
+        buttonConstraints.gridy = 2;
         centerPanel.add(buttonPanel, buttonConstraints);
 
         JButton allTodoListButton = new JButton("All ToDo List");
@@ -28,9 +39,9 @@ class MainPanel extends JPanel {
         });
         buttonPanel.add(allTodoListButton);
 
-        JButton myTodoListButton = new JButton("My ToDo List");
-        myTodoListButton.setPreferredSize(new Dimension(200, 50));
-        myTodoListButton.addActionListener(e -> {
+        JButton MyTodoListButton = new JButton("My ToDo List");
+        MyTodoListButton.setPreferredSize(new Dimension(200, 50));
+        MyTodoListButton.addActionListener(e -> {
             Container container = this.getParent();
             if (container instanceof Frame) {
                 Frame frame = (Frame) SwingUtilities.getWindowAncestor(MainPanel.this);
@@ -40,7 +51,7 @@ class MainPanel extends JPanel {
                 cardLayout.show(frame, "MyTodoListPanel");
             }
         });
-        buttonPanel.add(myTodoListButton);
+        buttonPanel.add(MyTodoListButton);
 
         JButton myPageButton = new JButton("My Page");
         myPageButton.setPreferredSize(new Dimension(200, 50));
