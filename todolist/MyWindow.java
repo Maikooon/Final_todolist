@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
+import javax.swing.ImageIcon;
 
 // 画面を制御する
 // 起動時に生成 or ログイン時に生成 or 遷移するたびに生成
@@ -28,6 +30,14 @@ public class MyWindow extends Frame {
         CardLayout cardLayout = new CardLayout();
         setLayout(cardLayout);
 
+        // icon
+        // 同じフォルダに画像を格納
+        URL imageIconUrl = getClass().getClassLoader().getResource("iconimage.png");
+        if (imageIconUrl != null) {
+            ImageIcon icon = new ImageIcon(imageIconUrl);
+            setIconImage(icon.getImage());
+        }
+
         // 起動時に生成して大丈夫なパネル
         add(new InitialPanel(), "InitialPanel");
         add(new SignUpPanel(), "SignUpPanel");
@@ -51,7 +61,7 @@ public class MyWindow extends Frame {
         // 値の受け渡しをする画面同士の制御
         // 一覧⇄詳細と詳細⇄編集はここに追加
         todoListPanel = new TodoListPanel();
-        //myTodoListPanel = new MyTodoListPanel();
+        // myTodoListPanel = new MyTodoListPanel();
         archiveTodoListPanel = new ArchiveTodoListPanel();
         detailTodoPanel = new DetailTodoPanel();
         archiveDetailTodoPanel = new ArchiveDetailTodoPanel();
@@ -65,10 +75,10 @@ public class MyWindow extends Frame {
         todoListPanel.setDetailPanel(detailTodoPanel);
         myTodoListPanel.setDetailPanel(detailTodoPanel);
 
-        //add(todoListPanel, "TodoListPanel");
-        //add(myTodoListPanel, "MyTodoListPanel");
+        // add(todoListPanel, "TodoListPanel");
+        // add(myTodoListPanel, "MyTodoListPanel");
         add(todoListPanel, "TodoListPanel");
-        add(myTodoListPanel,"MyTodoListPanel");
+        add(myTodoListPanel, "MyTodoListPanel");
         add(archiveTodoListPanel, "ArchiveTodoListPanel");
         add(detailTodoPanel, "DetailTodoPanel");
         add(archiveDetailTodoPanel, "ArchiveDetailTodoPanel");
