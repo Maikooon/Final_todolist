@@ -5,11 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.regex.Pattern;
+//for fash
+import java.security.MessageDigest;
 
 // SignUp画面
 
 public class SignUpPanel extends JPanel {
-
 
     private JTextField nameTextField;
     private JTextField emailTextField;
@@ -17,7 +18,6 @@ public class SignUpPanel extends JPanel {
     private JPasswordField passwordConfirmField;
     private JRadioButton publicRadioButton;
     private JRadioButton privateRadioButton;
-    
 
     public SignUpPanel() {
         // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
@@ -27,12 +27,12 @@ public class SignUpPanel extends JPanel {
         // タイトルラベルの作成
         JLabel titleLabel = new JLabel("Sign Up");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD,30));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
 
         // メインのパネル
         JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
         JLabel SpaceLabel = new JLabel("");
-        //nameTextField = new JTextField();
+        // nameTextField = new JTextField();
         JLabel nameLabel = new JLabel("Display Name:");
         nameTextField = new JTextField();
         JLabel emailLabel = new JLabel("Email:");
@@ -65,7 +65,7 @@ public class SignUpPanel extends JPanel {
         contentPanel.add(privateRadioButton);
 
         // Backボタンとタイトルを含むパネル
-        JButton backButton;  // Backボタンの定義
+        JButton backButton; // Backボタンの定義
         backButton = new JButton("Back");
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(backButton, BorderLayout.WEST);
@@ -78,8 +78,8 @@ public class SignUpPanel extends JPanel {
         buttonPanel.add(signUpButton);
 
         // 全体のレイアウト
-        //setLayout(new BorderLayout());
-        add(titlePanel,BorderLayout.NORTH);
+        // setLayout(new BorderLayout());
+        add(titlePanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -104,7 +104,8 @@ public class SignUpPanel extends JPanel {
 
             // バリデーションチェック
             if (!isValidName(name)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this, "Invalid name. Name should be between 3 and 30 characters.");
+                JOptionPane.showMessageDialog(SignUpPanel.this,
+                        "Invalid name. Name should be between 3 and 30 characters.");
                 return;
             }
 
@@ -114,12 +115,14 @@ public class SignUpPanel extends JPanel {
             }
 
             if (!isUniqueEmail(email)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this, "Email address already exists. Please choose a different email.");
+                JOptionPane.showMessageDialog(SignUpPanel.this,
+                        "Email address already exists. Please choose a different email.");
                 return;
             }
 
             if (!isValidPassword(password)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this, "Invalid password. Password should contain 8 to 20 characters, at least one letter and one digit.");
+                JOptionPane.showMessageDialog(SignUpPanel.this,
+                        "Invalid password. Password should contain 8 to 20 characters, at least one letter and one digit.");
                 return;
             }
 
@@ -176,9 +179,31 @@ public class SignUpPanel extends JPanel {
         return true; // ユニークなEmailの場合はtrueを返す
     }
 
-    // パスワードは8-20文字で英数字を混ぜる
+    // hash-function for passoword
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // パスワードは8-20文字で英数字を混ぜる,のちにHash関数で検証
     private boolean isValidPassword(String password) {
-        return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", password);
+        String hashedPassword = hashPassword(password);
+       // System.out.println(hashedPassword);
+        return Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$", hashedPassword);
     }
 
     // アカウントタイプは選択必須
