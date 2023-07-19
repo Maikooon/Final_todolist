@@ -13,7 +13,7 @@ import java.util.Map;
 
 // Todo edit panel 
 //generate panel : is alike DetailTodoPanel
-//save panel : ..   CreateTodoPanel
+//save panel : is like CreateTodoPanel
 
 public class EditTodoPanel extends JPanel {
     private JLabel idLabel;
@@ -139,14 +139,14 @@ public class EditTodoPanel extends JPanel {
         members = readMembersFromCSV("member.csv");
     }
 
-    // update date when chaned
+    // update date when changed
     class DateSelectionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             updateDayOptions();
         }
     }
 
-    // select box for year between 20 y
+    // select box for year between 20 year
     private Integer[] getYearOptions() {
         int currentYear = LocalDate.now().getYear();
         Integer[] years = new Integer[10];
@@ -257,7 +257,7 @@ public class EditTodoPanel extends JPanel {
                 ex.printStackTrace();
             }
 
-            // todos.csvに再度保存
+            // save to todos.csv
             try {
                 FileWriter writer = new FileWriter("todos.csv", true);
                 writer.write(toCSV(id, user_id, title, content, tag, priority, deadline, created_at, updated_at));

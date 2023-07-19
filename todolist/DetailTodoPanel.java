@@ -90,7 +90,7 @@ public class DetailTodoPanel extends JPanel {
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // action 5 bubttons 
+        // action 5 buttons 
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(DetailTodoPanel.this);
             MyWindow myWindow = (MyWindow) frame;
@@ -202,7 +202,7 @@ public class DetailTodoPanel extends JPanel {
         return members;
     }
 
-    // get detail date from todoId todos.csv y todoid
+    // Fetches detailed data from todos.csv file for the given todoId.
     private String[] readTodoDetailsFromCSV(String todoId) {
         String fileName = "todos.csv";
 
@@ -302,7 +302,7 @@ private void archiveTodo() {
     }
 
     // Archive button 
-    //dailog : Delet butonn is pushd 
+    //dialog : Delete butonn is pushd 
     private int showConfirmationDialog(String title, String message) {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,

@@ -153,7 +153,7 @@ public class ArchiveDetailTodoPanel extends JPanel {
         updatedAtLabel.setText("N/A");
     }
 
-    // read informatino fron member.csv
+    // read information from member.csv
     private Map<String, String> readMembersFromCSV(String fileName) {
         Map<String, String> members = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {

@@ -43,7 +43,7 @@ public class ArchiveTodoListPanel extends JPanel {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 70, 20, 70));
 
-        // separete panel
+        // separate panel
         LeftSelectPanel.setLayout(new BoxLayout(LeftSelectPanel, BoxLayout.Y_AXIS));
         ToDoPanel.setLayout(new GridLayout(15, 1));
 
@@ -158,7 +158,7 @@ public class ArchiveTodoListPanel extends JPanel {
         });
     }
 
-    // bgenerate DetailTodoPanel
+    // generate DetailTodoPanel
     private void onTodoButtonClick(String todoId) {
         detailPanel.loadTodoDetails(todoId);
         Frame frame = (Frame) SwingUtilities.getWindowAncestor(ArchiveTodoListPanel.this);
@@ -210,7 +210,7 @@ public class ArchiveTodoListPanel extends JPanel {
         return false;
     }
 
-    // sert by Tag
+    // sort by Tag
     private void filterTagTodos() {
         todosTagSelected.clear();
         for (TagCheckBox tagCheckBox : tagCheckBoxes) {
