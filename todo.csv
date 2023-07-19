@@ -1,16 +1,31 @@
 id, user_id, title, content, tag, deadline, priority, created_at, updated_at
-29,3,Private kanonが作ったタスク,Private kanonが作ったタスク,Home,2023-09-01,High,2023-07-16 15:34:02,2023-07-16 15:34:02
-32,4,今作ったよ,ああああ,Personal,2023-09-01,High,2023-07-16 17:43:00,2023-07-16 17:43:11
-33,4,あああああああああああ,あああ,Health,2023-09-01,High,2023-07-16 17:43:32,2023-07-16 17:43:32
-34,4,aaaaa,aaaa,Personal,2023-10-01,High,2023-07-16 17:44:23,2023-07-16 17:44:23
-35,5,aaaaa,aaaa,Personal,2023-08-01,High,2023-07-16 17:47:57,2023-07-16 17:48:06
-37,1,今作ったよ,ああああ,Personal,2026-01-01,High,2023-07-16 21:02:21,2023-07-16 21:02:21
-39,1,あああああああああああ,あああ,Personal,2023-11-01,High,2023-07-16 23:18:11,2023-07-16 23:18:11
-40,1,今更新した,ああああ,Social,2023-09-01,High,2023-07-16 23:31:17,2023-07-16 23:31:17
-41,1,aaaaaaaaa,aaaaaa,Finance,2023-10-01,Low,2023-07-16 23:36:22,2023-07-16 23:36:22
-42,2,hospital,go to hospital,Health,2024-01-07,Medium-Low,2023-07-18 02:17:14,2023-07-18 02:17:14
-30,2,aaaa,aaaaaa,Education,2023-09-01,High,2023-07-16 17:35:43,2023-07-16 17:35:43
-28,2,k@testが作ったタスク,k@testが作ったタスク,Finance,2023-11-01,High,2023-07-16 15:32:40,2023-07-16 15:32:40
-45,11,hair cut,maintenance,Personal,2023-11-01,Low,2023-07-18 08:23:23,2023-07-18 08:23:23
-43,11,math,study math,Education,2027-05-01,Medium,2023-07-18 06:59:07,2023-07-18 06:59:07
-47,12,My birthday,birthday party,Personal,2023-10-08,Medium-High,2023-07-18 15:37:19,2023-07-18 15:37:19
+1, 3, Buy Groceries, Purchase vegetables, fruits, and milk for the week., Home, 2023-07-20, Normal, 2023-07-19 08:30:00, 2023-07-19 08:30:00
+2, 5, Finish Report, Complete the quarterly sales report for the team., Work, 2023-07-25, High, 2023-07-19 09:15:00, 2023-07-19 09:15:00
+3, 2, Exercise, Go for a 30-minute jog in the park., Health, 2023-07-21, Normal, 2023-07-19 10:00:00, 2023-07-19 10:00:00
+4, 6, Pay Bills, Settle utility bills and credit card payment for the month., Finance, 2023-07-27, High, 2023-07-19 11:45:00, 2023-07-19 11:45:00
+5, 8, Study Japanese, Review vocabulary and practice speaking with a language partner., Education, 2023-07-23, Normal, 2023-07-19 12:30:00, 2023-07-19 12:30:00
+6, 4, Call Mom, Check in with Mom and discuss weekend plans., Personal, 2023-07-22, Normal, 2023-07-19 13:15:00, 2023-07-19 13:15:00
+7, 1, Organize Files, Sort and arrange documents in the computer folders., Work, 2023-07-24, Low, 2023-07-19 14:00:00, 2023-07-19 14:00:00
+8, 9, Attend Webinar, Participate in the marketing strategies webinar at 3 PM., Education, 2023-07-28, Normal, 2023-07-19 14:45:00, 2023-07-19 14:45:00
+9, 7, Yoga Session, Follow a 20-minute yoga video for relaxation., Health, 2023-07-26, High, 2023-07-19 15:30:00, 2023-07-19 15:30:00
+10, 10, Plan Vacation, Research travel destinations and book accommodation., Personal, 2023-08-05, High, 2023-07-19 16:15:00, 2023-07-19 16:15:00
+11, 2, Update Resume, Revise and enhance the resume for job applications., Work, 2023-08-01, Normal, 2023-07-19 17:00:00, 2023-07-19 17:00:00
+12, 4, Pay Membership Fee, Renew gym membership for the upcoming month., Health, 2023-08-03, Low, 2023-07-19 17:45:00, 2023-07-19 17:45:00
+13, 6, Review Budget, Analyze monthly expenses and adjust the budget accordingly., Finance, 2023-08-02, Normal, 2023-07-19 18:30:00, 2023-07-19 18:30:00
+14, 1, Read Book, Read the first three chapters of the new novel., Personal, 2023-08-04, Low, 2023-07-19 19:15:00, 2023-07-19 19:15:00
+15, 3, Prepare Presentation, Create slides for the upcoming client meeting., Work, 2023-08-06, Normal, 2023-07-19 20:00:00, 2023-07-19 20:00:00
+16, 5, Take Vitamins, Remember to take daily vitamins after breakfast., Health, 2023-08-07, High, 2023-07-19 20:45:00, 2023-07-19 20:45:00
+17, 7, Save Receipts, Keep track of expenses and store receipts in a folder., Finance, 2023-08-08, Normal, 2023-07-19 21:30:00, 2023-07-19 21:30:00
+18, 9, Practice Guitar, Learn new chords and practice a new song on the guitar., Personal, 2023-08-09, High, 2023-07-19 22:15:00, 2023-07-19 22:15:00
+19, 8, Schedule Meeting, Arrange a team meeting for project updates., Work, 2023-08-10, Normal, 2023-07-19 23:00:00, 2023-07-19 23:00:00
+20, 10, Meditate, Practice meditation for 10 minutes before bedtime., Health, 2023-08-11, Low, 2023-07-19 23:45:00, 2023-07-19 23:45:00
+21, 3, File Taxes, Complete and submit tax returns before the deadline., Finance, 2023-08-12, Normal, 2023-07-20 00:30:00, 2023-07-20 00:30:00
+22, 1, Plan Date Night, Organize a special evening with loved one., Personal, 2023-08-13, High, 2023-07-20 01:15:00, 2023-07-20 01:15:00
+23, 6, Respond to Emails, Reply to important emails in the inbox., Work, 2023-08-14, Normal, 2023-07-20 02:00:00, 2023-07-20 02:00:00
+24, 8, Workout Routine, Create a weekly workout schedule for fitness goals., Health, 2023-08-15, Normal, 2023-07-20 02:45:00, 2023-07-20 02:45:00
+25, 10, Set Savings Goal, Determine savings target for a future purchase., Finance, 2023-08-16, High, 2023-07-20 03:30:00, 2023-07-20 03:30:00
+26, 9, Gardening, Plant new flowers and tend to the garden., Home, 2023-08-17, Low, 2023-07-20 04:15:00, 2023-07-20 04:15:00
+27, 2, Research Course, Explore online courses for skill development., Education, 2023-08-18, Normal, 2023-07-20 05:00:00, 2023-07-20 05:00:00
+28, 4, Doctor's Appointment, Schedule a routine check-up with the doctor., Health, 2023-08-19, Normal, 2023-07-20 05:45:00, 2023-07-20 05:45:00
+29, 8, Track Expenses, Record daily expenses in a budgeting app., Finance, 2023-08-20, High, 2023-07-20 06:30:00, 2023-07-20 06:30:00
+30, 5, Clean Closet, Declutter and organize clothes in the wardrobe., Home, 2023-08-21, Normal, 2023-07-20 07:15:00, 2023-07-20 07:15:00
