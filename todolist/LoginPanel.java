@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -6,26 +7,27 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.MessageDigest;
 
 // Login画面
 
 class LoginPanel extends JPanel {
     private JTextField emailTextField;
     private JPasswordField passwordField;
-    public static int user_id; // ユーザーIDを保持するクラス変数
+    public static int user_id; // have userid
 
     public LoginPanel() {
-        // レイアウト部分：ボーダーレイアウトの中にグリッドレイアウト
+        // layout
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(40, 50, 40, 60));
 
-        // タイトルラベルの作成
+        // title label
         JLabel titleLabel = new JLabel("Log In");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD,30));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
 
-        // メインのパネル
-        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10)); 
+        // main
+        JPanel contentPanel = new JPanel(new GridLayout(9, 2, 5, 10));
 
         JLabel emailLabel = new JLabel("Email: ");
         emailTextField = new JTextField();
@@ -34,20 +36,20 @@ class LoginPanel extends JPanel {
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(400, 50));
 
-        // メインのパネルにラベルとフィールドを追加
+        // add label and panel
         contentPanel.add(emailLabel);
         contentPanel.add(emailTextField);
         contentPanel.add(passwordLabel);
         contentPanel.add(passwordField);
 
-        // Backボタンとタイトルを含むパネル
-        JButton backButton;  // Backボタンの定義
+        // buck button and title
+        JButton backButton; // back button
         backButton = new JButton("Back");
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(backButton, BorderLayout.WEST);
         titlePanel.add(titleLabel, BorderLayout.CENTER);
 
-        // Loginボタンの生成
+        // Login button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton loginButton = new JButton("Login");
         loginButton.setPreferredSize(new Dimension(200, 50));
@@ -58,8 +60,8 @@ class LoginPanel extends JPanel {
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // 「Login」 button is pused 
-        //verify the mathing  email & password
+        // 「Login」 button is pused
+        // verify the mathing email & password
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,18 +69,20 @@ class LoginPanel extends JPanel {
                 String password = new String(passwordField.getPassword());
 
                 if (checkLogin(email, password)) {
-                    user_id = getUserIdByEmail(email); // get user id form email 
-                    // clear input field  
+                    user_id = getUserIdByEmail(email); // get user id form email
+                    // clear input field
                     emailTextField.setText("");
                     passwordField.setText("");
-                    JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
                     Frame frame = (Frame) SwingUtilities.getWindowAncestor(LoginPanel.this);
                     MyWindow myWindow = (MyWindow) frame;
                     myWindow.addPanelsAfterLogin();
                     CardLayout cardLayout = (CardLayout) frame.getLayout();
                     cardLayout.show(frame, "MainPanel");
                 } else {
-                    JOptionPane.showMessageDialog(LoginPanel.this, "Invalid login credentials. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginPanel.this, "Invalid login credentials. Please try again.",
+                            "Login Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -89,7 +93,28 @@ class LoginPanel extends JPanel {
         });
     }
 
-    // verift  email to password
+    // verift email to password
+ 
+    // insead
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private boolean checkLogin(String email, String password) {
         try {
             String csvFile = "member.csv";
@@ -97,9 +122,12 @@ class LoginPanel extends JPanel {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length >= 4 && data[2].equals(email) && data[3].equals(password)) {
-                    br.close();
-                    return true;
+                if (data.length >= 4 && data[2].equals(email)) {
+                    // to hash password
+                    if (data[3].equals(hashPassword(password))) {
+                        br.close();
+                        return true;
+                    }
                 }
             }
             br.close();
@@ -109,7 +137,7 @@ class LoginPanel extends JPanel {
         return false;
     }
 
-    // get user id from email 
+    // get user id from email
     private int getUserIdByEmail(String email) {
         try {
             String csvFile = "member.csv";
