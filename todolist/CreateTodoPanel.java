@@ -90,14 +90,14 @@ class CreateTodoPanel extends JPanel {
         });
     }
 
-    // 年と月の選択が変更されたときに日の選択肢を更新する
+    // renew selection when year and data is changed
     class DateSelectionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             updateDayOptions();
         }
     }
 
-    // selvet year box
+    // select year box
     private Integer[] getYearOptions() {
         int currentYear = LocalDate.now().getYear();
         Integer[] years = new Integer[10];
@@ -213,7 +213,7 @@ class CreateTodoPanel extends JPanel {
             return tag != null && !tag.isEmpty();
         }
 
-        // data after today 
+        // data after today
         private boolean validateDeadline(LocalDate deadline) {
             LocalDate now = LocalDate.now();
             return deadline != null && deadline.isAfter(now);
@@ -224,7 +224,7 @@ class CreateTodoPanel extends JPanel {
             return priority != null && !priority.isEmpty();
         }
 
-        // generate id func 
+        // generate id func
         private int assignId() {
             int maxId = 0;
             try {

@@ -50,7 +50,7 @@ public class MyWindow extends Frame {
         addWindowListener(new WinListener());
     }
 
-    // add panel when login is successfur
+    // add panel when login is successful
     public void addPanelsAfterLogin() {
         myPagePanel = new MyPagePanel();
         editMyPagePanel = new EditMyPagePanel();
@@ -60,7 +60,7 @@ public class MyWindow extends Frame {
 
     // add panel - every time you open 
     public void reloadPanels() {
-        //translate many atai 
+        //move value
         // lst --detail & detail -edit 
         todoListPanel = new TodoListPanel();
         // myTodoListPanel = new MyTodoListPanel();

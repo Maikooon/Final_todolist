@@ -4,7 +4,7 @@ import java.awt.*;
 class MainPanel extends JPanel {
     MainPanel() {
         setLayout(new BorderLayout());
-        // move to toDoList、MytoDoList、My Profile
+        // move to toDoList、MytoDoList,My Profile
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
         add(centerPanel, BorderLayout.CENTER);

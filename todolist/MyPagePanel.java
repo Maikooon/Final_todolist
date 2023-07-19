@@ -15,11 +15,11 @@ public class MyPagePanel extends JPanel {
     private JLabel accountTypeLabel;
 
     public MyPagePanel() {
-        //lyaout 
+        //layout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(40, 60, 50, 70));
 
-        // title abel
+        // title label
         JLabel titleLabel = new JLabel("My Profile");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -73,7 +73,7 @@ public class MyPagePanel extends JPanel {
         add(contentPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // button avtion
+        // button action
         backButton.addActionListener(e -> {
             Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyPagePanel.this);
             MyWindow myWindow = (MyWindow) frame;
@@ -125,7 +125,7 @@ public class MyPagePanel extends JPanel {
         }
     }
 
-    // ///////dialog when Logout button is pushed 
+    //dialog when Logout button is pushed 
     private int showConfirmationDialog(String title, String message) {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,

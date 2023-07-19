@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 // MyPage edit panel
-// 画面の生成部分：isakile MyPagePanel
-// データの保存部分：isalike SignUpPanel
+// panel generate ：isakile MyPagePanel
+// data save：isalike SignUpPanel
 
 public class EditMyPagePanel extends JPanel {
     private JLabel idLabel;
@@ -44,7 +44,7 @@ public class EditMyPagePanel extends JPanel {
         accountTypeGroup.add(publicRadioButton);
         accountTypeGroup.add(privateRadioButton);
 
-        // add label an field to mina panel 
+        // add label an field to main panel 
         contentPanel.add(idTitleLabel);
         contentPanel.add(idLabel);
         contentPanel.add(new JLabel()); // adding 
@@ -91,7 +91,7 @@ public class EditMyPagePanel extends JPanel {
         });
     }
 
-    // if puushed Save button 
+    // if pushed Save button 
     class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         
@@ -135,7 +135,7 @@ public class EditMyPagePanel extends JPanel {
                 br.close();
                 bw.close();
 
-                memberFile.delete(); //overwritten by nre date in  member.csv
+                memberFile.delete(); //overwritten by new date in  member.csv
                 if (!tempFile.renameTo(new File("member.csv"))) {
                     throw new IOException("Failed to rename temp.csv to member.csv");
                 }
@@ -171,7 +171,7 @@ public class EditMyPagePanel extends JPanel {
         }
     }
 
-    // change data iorder to save CSV
+    // change data in order to save CSV
     private String toCSV(int id, String name, String email, String password, String accountType) {
         return String.format("%d,%s,%s,%s,%s", id, name, email, password, accountType);
     }

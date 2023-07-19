@@ -106,12 +106,12 @@ public class MyTodoListPanel extends JPanel {
         filterTagTodos();
         displayTodos();
 
-        // generate OK button when pudhed todo
+        // generate OK button when pushed todo
         SelectOKButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 filterTagTodos();
                 if (DeadLineCheckBox.isSelected() && PriorityCheckBox.isSelected()) {
-                    sortTodosBoth();// both Priority、DeadLine
+                    sortTodosBoth();// both Priority,DeadLine
                 } else if (DeadLineCheckBox.isSelected()) {
                     sortTodosDeadLine();// only DeadLine
                 } else if (PriorityCheckBox.isSelected()) {
@@ -174,7 +174,7 @@ public class MyTodoListPanel extends JPanel {
         });
     }
 
-    // puch button - generate DetailTodoPanel - move
+    // push button - generate DetailTodoPanel - move
     private void onTodoButtonClick(String todoId) {
         detailPanel.loadTodoDetails(todoId);
         Frame frame = (Frame) SwingUtilities.getWindowAncestor(MyTodoListPanel.this);

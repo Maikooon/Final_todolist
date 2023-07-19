@@ -20,11 +20,11 @@ public class SignUpPanel extends JPanel {
     private JRadioButton privateRadioButton;
 
     public SignUpPanel() {
-        // lyaout 
+        // layout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 40, 40, 40));
 
-        // titel label
+        // title label
         JLabel titleLabel = new JLabel("Sign Up");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -48,7 +48,7 @@ public class SignUpPanel extends JPanel {
         accountTypeGroup.add(publicRadioButton);
         accountTypeGroup.add(privateRadioButton);
 
-        //add laben to main 
+        //add label to main 
         contentPanel.add(SpaceLabel);
         contentPanel.add(new JLabel());
         contentPanel.add(nameLabel);
@@ -152,7 +152,7 @@ public class SignUpPanel extends JPanel {
         }
     }
 
-    // Name:3-20文字words
+    // Name:3-20words
     private boolean isValidName(String name) {
         return name.length() >= 3 && name.length() <= 20;
     }
@@ -207,7 +207,7 @@ public class SignUpPanel extends JPanel {
     }
     
 
-    // accoutn type 
+    // account type 
     private boolean isAccountTypeSelected() {
         return publicRadioButton.isSelected() || privateRadioButton.isSelected();
     }

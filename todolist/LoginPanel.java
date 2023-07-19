@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.MessageDigest;
 
-// Login画面
+// Login panel
 
 class LoginPanel extends JPanel {
     private JTextField emailTextField;
@@ -42,7 +42,7 @@ class LoginPanel extends JPanel {
         contentPanel.add(passwordLabel);
         contentPanel.add(passwordField);
 
-        // buck button and title
+        // back button and title
         JButton backButton; // back button
         backButton = new JButton("Back");
         JPanel titlePanel = new JPanel(new BorderLayout());
@@ -61,7 +61,7 @@ class LoginPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
 
         // 「Login」 button is pused
-        // verify the mathing email & password
+        // verify  email & password
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,9 +93,9 @@ class LoginPanel extends JPanel {
         });
     }
 
-    // verift email to password
+    // verify email to password
  
-    // insead
+    // hash -func
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
