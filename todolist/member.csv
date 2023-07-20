@@ -9,3 +9,4 @@ id,name,email,password,accountType
 8,Kato Sayaka,sayaka.kato@example.com,78b6e15b48f170879cf46e455ffc72916bf843de3a80ec4c6757c42c96278354,Public
 9,Kimura Tsuyoshi,tsuyoshi.kimura@example.com,57ba4e1df1851e417a56de30fd0d96d609eaa58e068c153156c57cc11308f299,Public
 10,Sasaki Misato,misato.sasaki@example.com,f9e3ded9f6001b5d120f7ce48b6bac5cecd449a70deb9294fa594c7e109cb392,Private
+11,Amemiya Kanon,kanon@test.com,c9818266ed9791a01ac65a2d97df14961bba3a130c3f6412e57dabd859cae26e,Public

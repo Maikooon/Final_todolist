@@ -157,7 +157,7 @@ public class DetailTodoPanel extends JPanel {
                 updatedAtLabel.setText(todoDetails[8]);
 
                 // if not my task  
-                //delete Edit,archive ,delete button 
+                // delete Edit,archive ,delete button 
                 if (!isMyTodo(memberId)) {
                     Container container = buttonPanel.getParent();
                     container.remove(buttonPanel);
@@ -302,7 +302,7 @@ private void archiveTodo() {
     }
 
     // Archive button 
-    //dialog : Delete butonn is pushd 
+    // dialog : Delete butonn is pushd 
     private int showConfirmationDialog(String title, String message) {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,

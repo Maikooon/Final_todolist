@@ -105,7 +105,8 @@ public class EditMyPagePanel extends JPanel {
 
             // validation ckeck
             if (!isValidName(name)) {
-                JOptionPane.showMessageDialog(EditMyPagePanel.this, "Invalid name. Name should contain only alphabets and have a length between 3 and 20 characters.");
+                JOptionPane.showMessageDialog(null, "Invalid name. Name should contain only alphabets and have a length between 3 and 20 characters.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

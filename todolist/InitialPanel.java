@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-//  Initial panel
+// Initial panel
 
 class InitialPanel extends JPanel {
     InitialPanel() {

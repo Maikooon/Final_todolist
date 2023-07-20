@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.regex.Pattern;
-//for fash
 import java.security.MessageDigest;
 
 // SignUp panel
@@ -104,37 +103,37 @@ public class SignUpPanel extends JPanel {
 
             // vaild check
             if (!isValidName(name)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this,
-                        "Invalid name. Name should be between 3 and 30 characters.");
+                JOptionPane.showMessageDialog(null, "Invalid name. Name should be between 3 and 30 characters.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (!isValidEmail(email)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this, "Invalid email.");
+                JOptionPane.showMessageDialog(null, "Invalid email.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (!isUniqueEmail(email)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this,
-                        "Email address already exists. Please choose a different email.");
+                JOptionPane.showMessageDialog(null, "Email address already exists. Please choose a different email.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (!isValidPassword(password)) {
-                JOptionPane.showMessageDialog(SignUpPanel.this,
-                        "Invalid password. Password should contain 8 to 20 characters, at least one letter and one digit.");
+                JOptionPane.showMessageDialog(null, "Invalid password. Password should contain 8 to 20 characters, at least one letter and one digit.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             
             if (!password.equals(passwordConfirm)) { // Password - Confirm Password
-                JOptionPane.showMessageDialog(SignUpPanel.this, "Passwords do not match.");
+                JOptionPane.showMessageDialog(null, "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             password = hashPassword(password);
 
             if (!isAccountTypeSelected()) {
-                JOptionPane.showMessageDialog(SignUpPanel.this, "Please select an account type.");
+                JOptionPane.showMessageDialog(null, "Please select an account type.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

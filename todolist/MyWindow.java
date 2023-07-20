@@ -6,9 +6,9 @@ import javax.swing.ImageIcon;
 
 // panel control
 // panel
-//1. app is up
-//2. login
-//3. move panel to panel 
+// 1. app is up
+// 2. login
+// 3. move panel to panel 
 
 public class MyWindow extends Frame {
     private TodoListPanel todoListPanel;
@@ -60,7 +60,7 @@ public class MyWindow extends Frame {
 
     // add panel - every time you open 
     public void reloadPanels() {
-        //move value
+        // move value
         // lst --detail & detail -edit 
         todoListPanel = new TodoListPanel();
         // myTodoListPanel = new MyTodoListPanel();
