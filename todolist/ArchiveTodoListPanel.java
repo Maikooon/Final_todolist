@@ -97,7 +97,7 @@ public class ArchiveTodoListPanel extends JPanel {
 
         // OK button
         JButton SelectOKButton = new JButton("OK");
-        SelectOKButton.setPreferredSize(new Dimension(300, 200));
+        SelectOKButton.setPreferredSize(new Dimension(200, 200));
         LeftSelectPanel.add(SelectOKButton);
         filterTagTodos();
         displayTodos();
@@ -293,7 +293,7 @@ public class ArchiveTodoListPanel extends JPanel {
             String buttonLabel = String.format("%-15s : %-18s |    #%-8s    |    *%-10s    |    %s", memberName, title,
                     tag, deadline, priority);
             JButton todoButton = new JButton(buttonLabel);
-            todoButton.setPreferredSize(new Dimension(500, 50));
+            todoButton.setPreferredSize(new Dimension(600, 50));
             todoButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     onTodoButtonClick(todoId);
