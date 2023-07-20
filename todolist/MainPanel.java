@@ -9,7 +9,7 @@ class MainPanel extends JPanel {
         JPanel centerPanel = new JPanel(new GridBagLayout());
         add(centerPanel, BorderLayout.CENTER);
 
-        //add "HOME"  label
+        // add "HOME" label
         JLabel titleLabel = new JLabel("HOME");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         GridBagConstraints titleConstraints = new GridBagConstraints();

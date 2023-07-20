@@ -8,13 +8,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-// All 
 import java.util.*;
 
-//check - have name and id 　
-
 // All Todo List
+// check box - have name and id
 
 public class TodoListPanel extends JPanel {
     private List<String[]> todos;

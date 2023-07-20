@@ -15,7 +15,7 @@ public class MyPagePanel extends JPanel {
     private JLabel accountTypeLabel;
 
     public MyPagePanel() {
-        //layout 
+        // layout 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(40, 60, 50, 70));
 
@@ -125,7 +125,7 @@ public class MyPagePanel extends JPanel {
         }
     }
 
-    //dialog when Logout button is pushed 
+    // dialog when Logout button is pushed 
     private int showConfirmationDialog(String title, String message) {
         return JOptionPane.showOptionDialog(this, message, title,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,

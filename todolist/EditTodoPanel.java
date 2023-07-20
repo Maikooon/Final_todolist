@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Todo edit panel 
-//generate panel : is alike DetailTodoPanel
-//save panel : is like CreateTodoPanel
+// generate panel : is alike DetailTodoPanel
+// save panel : is like CreateTodoPanel
 
 public class EditTodoPanel extends JPanel {
     private JLabel idLabel;

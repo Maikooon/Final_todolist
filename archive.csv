@@ -1,1 +1,1 @@
-id, user_id, title, content, tag, deadline, priority, created_at, updated_at
+id, userId, title, content, tag, deadline, priority, createdAt, updatedAt
