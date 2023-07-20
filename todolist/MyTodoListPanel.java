@@ -45,7 +45,7 @@ public class MyTodoListPanel extends JPanel {
         // left panel: LeftSelectPanel.
         // light panel :ToDoPanel
         LeftSelectPanel.setLayout(new BoxLayout(LeftSelectPanel, BoxLayout.Y_AXIS));
-        ToDoPanel.setLayout(new GridLayout(15, 1));
+        ToDoPanel.setLayout(new GridLayout(100, 1));
 
         // generate tag button
         LeftSelectPanel.add(new JLabel(" "));

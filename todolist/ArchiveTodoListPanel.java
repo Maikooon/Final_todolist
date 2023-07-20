@@ -45,7 +45,7 @@ public class ArchiveTodoListPanel extends JPanel {
 
         // separate panel
         LeftSelectPanel.setLayout(new BoxLayout(LeftSelectPanel, BoxLayout.Y_AXIS));
-        ToDoPanel.setLayout(new GridLayout(15, 1));
+        ToDoPanel.setLayout(new GridLayout(100, 1));
 
         // generate tag panel
         LeftSelectPanel.add(new JLabel(" "));
